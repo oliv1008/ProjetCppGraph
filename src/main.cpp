@@ -5,7 +5,7 @@ using namespace std;
 
 void test()
 {
-	CSommet * pSOMSommet1 = new CSommet(1);
+	/*CSommet * pSOMSommet1 = new CSommet(1);
 	CArc * pARCArc1 = new CArc(2);
 	CSommet * pSOMSommet2 = new CSommet(2);
 	CArc * pARCArc2 = new CArc(1);
@@ -37,7 +37,10 @@ void test()
 	delete pSOMSommet1;
 	delete pSOMSommet2;
 	delete pARCArc1;
-	delete pARCArc2;
+	delete pARCArc2;*/
+	
+	CGraphe * pGRPGraphe = new CGraphe("fichier.txt");
+	delete pGRPGraphe;
 }
 
 int main(int argc, char ** argv)

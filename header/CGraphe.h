@@ -14,6 +14,7 @@ class CGraphe
 	
 		// Constructeurs & Destructeur
 		CGraphe();
+		CGraphe(const char * pcChemin);
 		~CGraphe();
 		
 		// Setter & Getter

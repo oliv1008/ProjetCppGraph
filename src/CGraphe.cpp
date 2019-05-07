@@ -1,4 +1,5 @@
 #include "header/CGraphe.h"
+#include "header/CParserGraphe.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -8,6 +9,16 @@ CGraphe::CGraphe()
 {
 	pSOMGRPTabSommet = nullptr;
 	uiNombreSommet = 0;
+}
+
+CGraphe::CGraphe(const char * pcChemin)
+{
+	unsigned int uiNbSommets;
+	unsigned int uiNbArcs;
+	unsigned int * puiTabSommets;
+	unsigned int ** puiTabArcs;
+	
+	CParserGraphe::PAGParserGraphe(pcChemin, uiNbSommets, uiNbArcs, puiTabSommets, puiTabArcs);
 }
 
 CGraphe::~CGraphe()
