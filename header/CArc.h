@@ -15,10 +15,11 @@ class CArc
 		
 	public:
 	
-		//Constructeurs & Destructeur
+		// Constructeurs & Destructeur
 		CArc();
 		CArc(unsigned int uiDestination);
-		//Setter & Getter
+		
+		// Setter & Getter
 		unsigned int ARCLireDestination();
 		void ARCModifierDestination(unsigned int uiDestination);
 };

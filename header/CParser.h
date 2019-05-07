@@ -5,8 +5,6 @@ class CParser {
 
 	private :
 
-		
-
 	public :
 
 		static void PARSeparateString(char cToken, char* pcStr1, char* pcStr2); 

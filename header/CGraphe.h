@@ -1,7 +1,7 @@
 #ifndef CGRAPHE 
 #define CGRAPHE
 
-#include <header/CSommet.h>
+#include "header/CSommet.h"
 
 class CGraphe
 {
@@ -11,14 +11,17 @@ class CGraphe
 		unsigned int uiNombreSommet;
 		
 	public:
-		//Constructeurs & Destructeur
+	
+		// Constructeurs & Destructeur
 		CGraphe();
 		~CGraphe();
-		//Setter & Getter
+		
+		// Setter & Getter
 		CSommet * GRPLireSommet(unsigned int uiNumero);
-		void GRPAjouterSommet(CSommet* SOMSommet);
+		void GRPAjouterSommet(CSommet *pSOMSommet);
 		void GRPEnleverSommet(unsigned int uiNumero);
-		//Methodes
+		
+		// Methodes
 		void GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPAfficherGraphe();

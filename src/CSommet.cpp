@@ -1,4 +1,4 @@
-#include <header/CSommet.h>
+#include "header/CSommet.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -47,7 +47,7 @@ void CSommet::SOMModifierNumero(unsigned int uiNumero)
 	uiSOMNumero = uiNumero;
 }
 
-void CSommet::SOMAjouterArcArrivant(CArc * pARCArc)
+void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
 	
@@ -61,6 +61,7 @@ void CSommet::SOMAjouterArcArrivant(CArc * pARCArc)
 	}
 	else
 	{
+		// EXCEPTION
 		cout << "erreur reallocation lors de l'ajout d'un arc partant" << endl;
 	}
 }
@@ -91,13 +92,14 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 			}
 			else
 			{
+				// EXCEPTION
 				cout << "erreur reallocation lors de la suppression d'un arc arrivant" << endl;
 			}
 		}
 	}
 }
 
-void CSommet::SOMAjouterArcPartant(CArc * pARCArc)
+void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
 	
@@ -111,6 +113,7 @@ void CSommet::SOMAjouterArcPartant(CArc * pARCArc)
 	}
 	else
 	{
+		// EXCEPTION
 		cout << "erreur reallocation lors de l'ajout d'un arc partant" << endl;
 	}
 }
@@ -141,6 +144,7 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 			}
 			else
 			{
+				// EXCEPTION
 				cout << "erreur reallocation lors de la suppression d'un arc partant" << endl;
 			}
 		}
