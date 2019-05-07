@@ -1,7 +1,15 @@
 #ifndef CPARSERGRAPHE
 #define CPARSERGRAPHE
 
-#incldude
+#include <header/CParser.h>
+#include <header/CException.h>
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
+#define ERR_FORMAT    1
+#define ERR_NUMERIQUE 2
 
 class CParserGraphe : private CParser {
 
@@ -10,7 +18,8 @@ class CParserGraphe : private CParser {
 
 	public :
 	
-		static void PAGParserGraphe(const char * pcChemin, unsigned int &uiNbLignes, unsigned int &uiNbColonnes, MType** &pMTPMatrice)
+		static void PAGParserGraphe(const char * pcChemin, unsigned int &uiNbSommets, unsigned int &uiNbArcs, unsigned int * &puiNumeroSommets, \
+									unsigned int ** &puiTabArc)
 		{
 			ifstream fichier(pcChemin, ios::in);  // on ouvre le fichier en lecture
  
@@ -20,100 +29,126 @@ class CParserGraphe : private CParser {
 				char ligne[256];
 				char resultat[256];
 				
-				//On récupère le type de la matrice
+				//On récupère le nombre de sommets
 				fichier >> ligne;
-				//cout << ligne << endl;
+				cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
-				//On vérifie qu'il est valide
-				if (!CParser::PARIsStringEqual(ligne, "TypeMatrice") || !CParser::PARIsStringEqual(resultat, "double"))
+				if (!CParser::PARIsStringEqual(ligne, "NBSommets"))
 				{
-					CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;
-				}
-				
-				//On récupère le nombre de lignes
-				fichier >> ligne;
-				//cout << ligne << endl;
-				CParser::PARSeparateString('=', ligne, resultat);
-				
-				if (!CParser::PARIsStringEqual(ligne, "NBLignes"))
-				{
-					CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;
+					/*CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;*/
 				}
 				else if (!CParser::PARIsStringANumericalValue(resultat))
 				{
-					CException ErrNumerique(ERR_NUMERIQUE);
-					throw ErrNumerique;
+					/*CException ErrFormat(ERR_NUMERIQUE);
+					throw ErrFormat;*/
+				}
+				
+				uiNbSommets = atoi(resultat);
+				
+				//On récupère le nombre d'arcs
+				fichier >> ligne;
+				cout << ligne << endl;
+				CParser::PARSeparateString('=', ligne, resultat);
+				
+				if (!CParser::PARIsStringEqual(ligne, "NBArcs"))
+				{
+					/*CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;*/
+				}
+				else if (!CParser::PARIsStringANumericalValue(resultat))
+				{
+					/*CException ErrNumerique(ERR_NUMERIQUE);
+					throw ErrNumerique;*/
 				}
 
-				uiNbLignes = atoi(resultat);
+				uiNbArcs = atoi(resultat);
 				
-				//On récupère le nombre de colonnes
+				//On récupère la ligne "Sommets=["
 				fichier >> ligne;
-				//cout << ligne << endl;
-				CParser::PARSeparateString('=', ligne, resultat);
-				
-				if (!CParser::PARIsStringEqual(ligne, "NBColonnes"))
+				cout << ligne << endl;
+				if (!CParser::PARIsStringEqual(ligne, "Sommets=["))
 				{
-					CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;
-				}
-				else if (!CParser::PARIsStringANumericalValue(resultat))
-				{
-					CException ErrNumerique(ERR_NUMERIQUE);
-					throw ErrNumerique;
+					/*CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;*/
 				}
 				
-		
-				uiNbColonnes = atoi(resultat);
-			
-				//On saute la ligne "Matrice=["
-				fichier >> ligne;
-				//cout << ligne << endl;
-				if (!CParser::PARIsStringEqual(ligne, "Matrice=["))
+				//On remplit le tableau
+				puiNumeroSommets = (unsigned int *)malloc(uiNbSommets * sizeof(unsigned int));
+				for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 				{
-					CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;
-				}
-				
-	
-				//On remplit la matrice
-				pMTPMatrice = (MType **)malloc(uiNbLignes * sizeof(MType *));
-				for(unsigned int uiBoucle = 0; uiBoucle < uiNbLignes; uiBoucle++)
-				{
-					pMTPMatrice[uiBoucle] = (MType *)malloc(uiNbColonnes * sizeof(MType));
-				}
-			
-				for (unsigned int uiBoucleL = 0; uiBoucleL < uiNbLignes; uiBoucleL++)
-				{
-					for (unsigned int uiBoucleC = 0; uiBoucleC < uiNbColonnes; uiBoucleC++)
+					//On récupère l'élement
+					fichier >> ligne;
+					cout << ligne << endl;
+					if (CParser::PARIsStringEqual(ligne, "]"))
 					{
-						//On récupère l'élement
-						fichier >> ligne;
-						//cout << ligne << endl;
-						if (CParser::PARIsStringEqual(ligne, "]"))
-						{
-							CException ErrDimension(ERR_DIMENSION);
-							throw ErrDimension;
-						}
-						else if (!CParser::PARIsStringANumericalValue(ligne))
-						{
-							CException ErrNumerique(ERR_NUMERIQUE);
-							throw ErrNumerique;
-						}
-						
-						pMTPMatrice[uiBoucleL][uiBoucleC] = atof(ligne);
+						/*CException ErrDimension(ERR_FORMAT);
+						throw ErrDimension;*/
 					}
+					else if (!CParser::PARIsStringANumericalValue(ligne))
+					{
+						/*CException ErrNumerique(ERR_NUMERIQUE);
+						throw ErrNumerique;*/
+					}
+					
+					puiNumeroSommets[uiBoucle] = atoi(ligne);
 				}
 				
 				fichier >> ligne;
-				//cout << ligne << endl;
+				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
-					CException ErrDimension(ERR_DIMENSION);
-					throw ErrDimension;
+					/*CException ErrDimension(ERR_FORMAT);
+					throw ErrDimension;*/
+				}
+				
+				//On récupère la ligne "Arcs=["
+				fichier >> ligne;
+				cout << ligne << endl;
+				if (!CParser::PARIsStringEqual(ligne, "Arcs=["))
+				{
+					/*CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;*/
+				}
+				
+				//On remplit le tableau
+				puiTabArc = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
+				for (unsigned int uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
+				{
+					puiTabArc[uiBoucle] = (unsigned int *)malloc(2 * sizeof(unsigned int));
+				}
+				
+				for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+				{
+					//On récupère l'élement
+					fichier >> ligne;
+					cout << ligne << endl;
+					if (CParser::PARIsStringEqual(ligne, "]"))
+					{
+						/*CException ErrDimension(ERR_FORMAT);
+						throw ErrDimension;*/
+					}
+					CParser::PARSeparateString('=', ligne, resultat);
+					puiTabArc[uiBoucle][0] = atoi(resultat);
+					
+					fichier >> ligne;
+					cout << ligne << endl;
+					if (CParser::PARIsStringEqual(ligne, "]"))
+					{
+						/*CException ErrDimension(ERR_FORMAT);
+						throw ErrDimension;*/
+					}
+					CParser::PARSeparateString('=', ligne, resultat);
+					puiTabArc[uiBoucle][1] = atoi(resultat);
+				}
+				
+				fichier >> ligne;
+				cout << ligne << endl;
+				if (!CParser::PARIsStringEqual(ligne, "]"))
+				{
+					/*CException ErrDimension(ERR_FORMAT);
+					throw ErrDimension;*/
 				}
 
 				fichier.close();  // on ferme le fichier
