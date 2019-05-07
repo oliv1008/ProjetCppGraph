@@ -16,6 +16,8 @@ CSommet::CSommet()
 CSommet::CSommet(unsigned int uiNumero)
 {
 	uiSOMNumero = uiNumero;
+	pARCSOMArrivant = nullptr;
+	pARCSOMPartant = nullptr;
 	uiCompteurArcArrivant = 0;
 	uiCompteurArcPartant = 0;
 }
@@ -81,7 +83,7 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 			//On réalloue le tableau
 			pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiCompteurArcArrivant - 1));
 			
-			if (pARCTemp != nullptr)
+			if (pARCTemp != nullptr || uiCompteurArcArrivant == 1)
 			{
 				pARCSOMArrivant = pARCTemp;
 				uiCompteurArcArrivant--;
@@ -131,7 +133,7 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 			//On réalloue le tableau
 			pARCTemp = (CArc**)realloc(pARCSOMPartant, sizeof(CArc*) * (uiCompteurArcPartant - 1));
 			
-			if (pARCTemp != nullptr)
+			if (pARCTemp != nullptr || uiCompteurArcPartant == 1)
 			{
 				pARCSOMPartant = pARCTemp;
 				uiCompteurArcPartant--;
