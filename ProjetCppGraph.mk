@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/src_CSommet.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CParser.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CGraphe.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CException.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CArc.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_CSommet.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CParser.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CGraphe.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CException.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CArc.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_CParserGraphe.cpp$(ObjectSuffix) 
 
 
 
@@ -138,6 +138,14 @@ $(IntermediateDirectory)/src_main.cpp$(DependSuffix): src/main.cpp
 
 $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) src/main.cpp
+
+$(IntermediateDirectory)/src_CParserGraphe.cpp$(ObjectSuffix): src/CParserGraphe.cpp $(IntermediateDirectory)/src_CParserGraphe.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/olivier/Bureau/Polytech/ProjetCppGraph/src/CParserGraphe.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_CParserGraphe.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_CParserGraphe.cpp$(DependSuffix): src/CParserGraphe.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_CParserGraphe.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_CParserGraphe.cpp$(DependSuffix) -MM src/CParserGraphe.cpp
+
+$(IntermediateDirectory)/src_CParserGraphe.cpp$(PreprocessSuffix): src/CParserGraphe.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_CParserGraphe.cpp$(PreprocessSuffix) src/CParserGraphe.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

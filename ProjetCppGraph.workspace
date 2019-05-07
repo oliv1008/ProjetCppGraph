@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="ProjetCppGraph" Database="" Version="10.0.0">
   <Project Name="ProjetCppGraph" Path="ProjetCppGraph.project" Active="Yes"/>
+  <Project Name="ProjetCpp" Path="../ProjetCpp/ProjetCpp.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="ProjetCppGraph" ConfigName="Debug"/>
+      <Project Name="ProjetCpp" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
       <Project Name="ProjetCppGraph" ConfigName="Release"/>
+      <Project Name="ProjetCpp" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
