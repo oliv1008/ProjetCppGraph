@@ -23,11 +23,17 @@ class CSommet
 		// Setter & Getter
 		unsigned int SOMLireNumero();
 		void SOMModifierNumero(unsigned int uiNumero);
+		
 		void SOMAjouterArcArrivant(CArc * pARCArc);
 		void SOMEnleverArcArrivant(unsigned int uiDestination);
 		void SOMAjouterArcPartant(CArc * pARCArc);
 		void SOMEnleverArcPartant(unsigned int uiDestination);
 		
+		CArc ** SOMLireArcArrivant();
+		CArc ** SOMLireArcPartant();
+		
+		unsigned int SOMLireCompteurArcArrivant();
+		unsigned int SOMLireCompteurArcPartant();
 		// Methodes
 			//Affiche toute les infos du sommet (numéro & liste d'arc arrivant + partant)
 		void SOMAfficherSommet();

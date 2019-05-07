@@ -1,4 +1,4 @@
-#include <header/CGraphe.h>
+#include "header/CGraphe.h"
 #include <iostream>
 
 using namespace std;
@@ -40,8 +40,35 @@ void test()
 	delete pARCArc2;
 }
 
+void testGraphe()
+{
+	CGraphe graph;
+	
+	graph.GRPAjouterSommet(1);
+	graph.GRPAjouterSommet(2);
+	graph.GRPAjouterSommet(3);
+	
+	graph.GRPAjouterArc(1, 2);
+	graph.GRPAjouterArc(2, 3);
+	graph.GRPAjouterArc(3, 1);
+	
+	graph.GRPAfficherGraphe();
+	cout << "=======================" << endl;
+	graph.GRPEnleverSommet(1);
+	
+	graph.GRPAfficherGraphe();
+	
+	graph.GRPAjouterSommet(4);
+	graph.GRPAjouterArc(2, 4);
+	graph.GRPAjouterArc(4, 2);
+	
+	cout << "=======================" << endl;
+	graph.GRPAfficherGraphe();
+}
+
 int main(int argc, char ** argv)
 {
-	test();
+	//test();
+	testGraphe();
 	return 0;
 }

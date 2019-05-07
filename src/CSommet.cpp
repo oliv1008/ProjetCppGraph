@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// constructeurs et destructeur
 CSommet::CSommet()
 {
 	uiSOMNumero = 0;
@@ -37,6 +38,7 @@ CSommet::~CSommet()
 	free(pARCSOMPartant);
 }
 
+// accesseurs
 unsigned int CSommet::SOMLireNumero()
 {
 	return uiSOMNumero;
@@ -151,17 +153,38 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 	}
 }
 
+unsigned int CSommet::SOMLireCompteurArcArrivant()
+{
+	return uiCompteurArcArrivant;
+}
+
+unsigned int CSommet::SOMLireCompteurArcPartant()
+{
+	return uiCompteurArcPartant;
+}
+
+CArc ** CSommet::SOMLireArcArrivant()
+{
+	return pARCSOMArrivant;
+}
+
+CArc ** CSommet::SOMLireArcPartant()
+{
+	return pARCSOMPartant;
+}
+
+// méthodes
 void CSommet::SOMAfficherSommet()
 {
 	cout << "S" << uiSOMNumero << endl;
 	cout << "Arc arrivant :" << endl;
 	for (unsigned int uiBoucleA = 0; uiBoucleA < uiCompteurArcArrivant; uiBoucleA++)
 	{
-		cout << "\tArc à destination de " << pARCSOMArrivant[uiBoucleA]->ARCLireDestination() << endl;
+		cout << "\tArc arrivant de " << pARCSOMArrivant[uiBoucleA]->ARCLireDestination() << endl;
 	}
 	cout << "Arc partant :" << endl;
 	for (unsigned int uiBoucleP = 0; uiBoucleP < uiCompteurArcPartant; uiBoucleP++)
 	{
-		cout << "\tArc à destination de " << pARCSOMPartant[uiBoucleP]->ARCLireDestination() << endl;
+		cout << "\tArc partant vers " << pARCSOMPartant[uiBoucleP]->ARCLireDestination() << endl;
 	}
 }

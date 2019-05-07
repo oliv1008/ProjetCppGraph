@@ -18,7 +18,7 @@ class CGraphe
 		
 		// Setter & Getter
 		CSommet * GRPLireSommet(unsigned int uiNumero);
-		void GRPAjouterSommet(CSommet *pSOMSommet);
+		void GRPAjouterSommet(unsigned int uiNumero);
 		void GRPEnleverSommet(unsigned int uiNumero);
 		
 		// Methodes
