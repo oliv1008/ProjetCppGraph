@@ -1,6 +1,8 @@
 #ifndef CARC 
 #define CARC
 
+#include "header/CException.h"
+
 class CArc
 {
 	private:

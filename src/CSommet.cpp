@@ -67,9 +67,9 @@ void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 		uiCompteurArcArrivant++;
 	}
 	else
-	{
-		// EXCEPTION
-		cout << "erreur reallocation lors de l'ajout d'un arc partant" << endl;
+	{	// Erreur réallocation
+		CException ErrRealloc(ERR_REALLOC);
+		throw ErrRealloc;
 	}
 }
 
@@ -98,9 +98,9 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 				bArcDel = false;
 			}
 			else
-			{
-				// EXCEPTION
-				cout << "erreur reallocation lors de la suppression d'un arc arrivant" << endl;
+			{	// Erreur réallocation
+				CException ErrRealloc(ERR_REALLOC);
+				throw ErrRealloc;
 			}
 		}
 	}
@@ -110,7 +110,7 @@ void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
 	
-	pARCTemp = (CArc**)realloc(pARCSOMPartant, sizeof(CArc*) * (uiCompteurArcPartant + 1));
+	pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiCompteurArcPartant + 1) * sizeof(CArc *));
 	
 	if (pARCTemp != nullptr)
 	{
@@ -119,9 +119,9 @@ void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 		uiCompteurArcPartant++;
 	}
 	else
-	{
-		// EXCEPTION
-		cout << "erreur reallocation lors de l'ajout d'un arc partant" << endl;
+	{	// Erreur réallocation
+		CException ErrRealloc(ERR_REALLOC);
+		throw ErrRealloc;
 	}
 }
 
@@ -141,7 +141,7 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 				pARCSOMPartant[uiBoucleDel] = pARCSOMPartant[uiBoucleDel + 1];
 			}
 			// On réalloue le tableau
-			pARCTemp = (CArc**)realloc(pARCSOMPartant, sizeof(CArc*) * (uiCompteurArcPartant - 1));
+			pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiCompteurArcPartant - 1) * sizeof(CArc *));
 			
 			if (pARCTemp != nullptr || uiCompteurArcPartant == 1)
 			{
@@ -150,9 +150,9 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 				bArcDel = false;
 			}
 			else
-			{
-				// EXCEPTION
-				cout << "erreur reallocation lors de la suppression d'un arc partant" << endl;
+			{	// Erreur réallocation
+				CException ErrRealloc(ERR_REALLOC);
+				throw ErrRealloc;
 			}
 		}
 	}

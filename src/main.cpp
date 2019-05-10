@@ -47,33 +47,46 @@ void testGraphe()
 {
 	CGraphe graph;
 	
-	try 
-	{
-		graph.GRPAjouterSommet(1);
-		graph.GRPAjouterSommet(2);
-		graph.GRPAjouterSommet(3);
+	graph.GRPAjouterSommet(1);
+	graph.GRPAjouterSommet(2);
+	graph.GRPAjouterSommet(3);
 		
-		graph.GRPAjouterArc(1, 2);
-		graph.GRPAjouterArc(2, 3);
-		graph.GRPAjouterArc(3, 1);
+	graph.GRPAjouterArc(1, 2);
+	graph.GRPAjouterArc(2, 3);
+	graph.GRPAjouterArc(3, 1);
 		
-		graph.GRPAjouterSommet(4);
-		graph.GRPAjouterArc(2, 4);
-		graph.GRPAjouterArc(4, 2);
-		graph.GRPAjouterArc(2, 1);
-		graph.GRPAjouterArc(3, 2);
+	graph.GRPAjouterSommet(4);
+	graph.GRPAjouterArc(2, 4);
+	graph.GRPAjouterArc(4, 2);
+	graph.GRPAjouterArc(2, 1);
+	graph.GRPAjouterArc(3, 2);
 		
 		
-		graph.GRPAfficherGraphe();
-		cout << "=======================" << endl;
+	graph.GRPAfficherGraphe();
+	cout << "=======================" << endl;
+	
+	try {
 		graph.GRPEnleverSommet(2);
+	}catch(CException EXCErreur){
+		switch(EXCErreur.EXCLireErreur()){
+			case ERR_NUMSOM : cerr << "Erreur : ce sommet n'existe pas" << endl; break;
+			case ERR_REALLOC : cerr << "Erreur realloc" << endl; exit(0);
+			default : cerr << "Erreur inconnue" << endl; exit(0);
+		}
+	}
+	
+	try {
 		graph.GRPEnleverArc(3, 1);
-		graph.GRPAfficherGraphe();
-		cout << "=======================" << endl;
+	}catch(CException EXCErreur){
+		switch(EXCErreur.EXCLireErreur()){
+			case ERR_NUMSOM : cerr << "Erreur : ce sommet n'existe pas" << endl; break;
+			case ERR_REALLOC : cerr << "Erreur realloc" << endl; exit(0);
+			default : cerr << "Erreur inconnue" << endl; exit(0);
+		}
 	}
-	catch(CException EXCErreur){
-		cerr << "Erreur : indices incorrects, cet arc n'existe pas" << endl;
-	}
+	graph.GRPAfficherGraphe();
+	cout << "=======================" << endl;
+
 	
 }
 

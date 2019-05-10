@@ -1,6 +1,8 @@
 #ifndef CPARSER 
 #define CPARSER
 
+#include "header/CException.h"
+
 class CParser {
 
 	private :

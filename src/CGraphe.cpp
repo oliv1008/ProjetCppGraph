@@ -2,10 +2,6 @@
 #include <iostream>
 #include "header/CGraphe.h"
 
-#define ERR_REALLOC		4
-#define ERR_NUMSOM		5
-
-
 using namespace std;
 
 /********* CONSTRUCTEURS *********/
@@ -42,6 +38,22 @@ CGraphe::~CGraphe()
 /********** ACCESSEURS **********/ 
 CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 {
+	bool bTrouve = false;
+	// Gestion exception
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
+	{
+		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
+		{
+			bTrouve = true;
+		}
+	}
+	
+	if(!bTrouve)
+	{	// Erreur sommet non trouvé
+		CException ErrNumSom(ERR_NUMSOM);
+		throw ErrNumSom;
+	}
+	
 	return pSOMGRPTabSommet[uiNumero];
 }
 
@@ -66,13 +78,34 @@ void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 
 void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 {
+	cout << "# Suppression du sommet " << uiNumero << "..." << endl;
+ 	
 	CSommet ** pSOMTemp;
 	bool bSommetDel = true;
+	
+	
+	bool bTrouve = false;
+	// Gestion exception
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
+	{
+		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
+		{
+			bTrouve = true;
+		}
+	}
+	
+	if(!bTrouve)
+	{	// Erreur sommet non trouvé
+		CException ErrNumSom(ERR_NUMSOM);
+		throw ErrNumSom;
+	}
+	
 	
 	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && bSommetDel; uiBoucle++)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
 		{
+			// On supprimes tous les arcs liés à ce sommet
 			unsigned int uiArcsPartants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcPartant();
 			unsigned int uiArcsArrivants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcArrivant();
 			
@@ -80,13 +113,13 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 			cout << "[GRPEnleverSommet] Arcs partants : " << uiArcsPartants << endl;
 			cout << "[GRPEnleverSommet] Arcs arrivants : " << uiArcsArrivants << endl;
 			
-			// Arcs partants (from this, to other)
+			// Arcs partants
 			for(unsigned int uiBoucleSom = 0; uiBoucleSom < uiArcsPartants; uiBoucleSom++)
 			{
 				GRPEnleverArc(uiNumero, pSOMGRPTabSommet[uiBoucle]->SOMLireArcPartant()[0]->ARCLireDestination());
 			}
 			
-			// Arcs arrivant (from other, to this)
+			// Arcs arrivant
 			for(unsigned int uiBoucleSom = 0; uiBoucleSom < uiArcsArrivants; uiBoucleSom++)
 			{
 				GRPEnleverArc(pSOMGRPTabSommet[uiBoucle]->SOMLireArcArrivant()[0]->ARCLireDestination(), uiNumero);
@@ -110,12 +143,12 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 				bSommetDel = false;
 			}
 			else
-			{
+			{	// Erreur réallocation
 				CException ErrRealloc(ERR_REALLOC);
 				throw ErrRealloc;
 			}
 		}
-	}
+	}	
 }
 /*******************************/ 
 
@@ -146,12 +179,13 @@ void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 	}
 	
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMAjouterArcPartant(new CArc(uiTo));
-
 	pSOMGRPTabSommet[uiIndiceTo]->SOMAjouterArcArrivant(new CArc(uiFrom));
 }
 
 void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 {
+	cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
+	
 	bool bTrouveFrom = false, bTrouveTo = false;
 	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
 	
@@ -175,7 +209,6 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 		throw ErrNumSom;
 	}
 	
-	cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMEnleverArcPartant(uiTo);
 	pSOMGRPTabSommet[uiIndiceTo]->SOMEnleverArcArrivant(uiFrom);
 }

@@ -4,6 +4,9 @@
 #include "header/CSommet.h"
 #include "header/CParserGraphe.h"
 
+#define ERR_REALLOC		4
+#define ERR_NUMSOM		5
+
 class CGraphe
 {
 	private:

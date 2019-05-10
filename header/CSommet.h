@@ -3,6 +3,8 @@
 
 #include "header/CArc.h"
 
+#define ERR_REALLOC		4
+
 class CSommet
 {
 	private:
