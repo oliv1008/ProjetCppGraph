@@ -1,15 +1,16 @@
 #ifndef CPARSERGRAPHE
 #define CPARSERGRAPHE
 
-#include <header/CParser.h>
-#include <header/CException.h>
 #include <fstream>
 #include <iostream>
+#include "header/CParser.h"
+#include "header/CException.h"
 
 using namespace std;
 
-#define ERR_FORMAT    1
-#define ERR_NUMERIQUE 2
+#define ERR_FORMAT    	1
+#define ERR_NUMERIQUE 	2
+#define ERR_FICHIER 	3
 
 class CParserGraphe : private CParser {
 
@@ -21,75 +22,75 @@ class CParserGraphe : private CParser {
 		static void PAGParserGraphe(const char * pcChemin, unsigned int &uiNbSommets, unsigned int &uiNbArcs, unsigned int * &puiNumeroSommets, \
 									unsigned int ** &puiTabArc)
 		{
-			ifstream fichier(pcChemin, ios::in);  // on ouvre le fichier en lecture
+			ifstream fichier(pcChemin, ios::in);  // On ouvre le fichier en lecture
  
-			if(fichier)  // si l'ouverture a réussi
+			if(fichier)  // Si l'ouverture a réussi
 			{       
-				// instructions
+				// Instructions
 				char ligne[256];
 				char resultat[256];
 				
-				//On récupère le nombre de sommets
+				// On récupère le nombre de sommets
 				fichier >> ligne;
 				cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				if (!CParser::PARIsStringEqual(ligne, "NBSommets"))
 				{
-					/*CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;*/
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				else if (!CParser::PARIsStringANumericalValue(resultat))
 				{
-					/*CException ErrFormat(ERR_NUMERIQUE);
-					throw ErrFormat;*/
+					CException ErrNumerique(ERR_NUMERIQUE);
+					throw ErrNumerique;
 				}
 				
 				uiNbSommets = atoi(resultat);
 				
-				//On récupère le nombre d'arcs
+				// On récupère le nombre d'arcs
 				fichier >> ligne;
 				cout << ligne << endl;
 				CParser::PARSeparateString('=', ligne, resultat);
 				
 				if (!CParser::PARIsStringEqual(ligne, "NBArcs"))
 				{
-					/*CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;*/
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				else if (!CParser::PARIsStringANumericalValue(resultat))
 				{
-					/*CException ErrNumerique(ERR_NUMERIQUE);
-					throw ErrNumerique;*/
+					CException ErrNumerique(ERR_NUMERIQUE);
+					throw ErrNumerique;
 				}
 
 				uiNbArcs = atoi(resultat);
 				
-				//On récupère la ligne "Sommets=["
+				// On récupère la ligne "Sommets=["
 				fichier >> ligne;
 				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "Sommets=["))
 				{
-					/*CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;*/
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				
-				//On remplit le tableau
+				// On remplit le tableau
 				puiNumeroSommets = (unsigned int *)malloc(uiNbSommets * sizeof(unsigned int));
 				for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 				{
-					//On récupère l'élement
+					// On récupère l'élement
 					fichier >> ligne;
 					cout << ligne << endl;
 					if (CParser::PARIsStringEqual(ligne, "]"))
 					{
-						/*CException ErrDimension(ERR_FORMAT);
-						throw ErrDimension;*/
+						CException ErrFormat(ERR_FORMAT);
+						throw ErrFormat;
 					}
 					else if (!CParser::PARIsStringANumericalValue(ligne))
 					{
-						/*CException ErrNumerique(ERR_NUMERIQUE);
-						throw ErrNumerique;*/
+						CException ErrNumerique(ERR_NUMERIQUE);
+						throw ErrNumerique;
 					}
 					
 					puiNumeroSommets[uiBoucle] = atoi(ligne);
@@ -99,20 +100,20 @@ class CParserGraphe : private CParser {
 				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
-					/*CException ErrDimension(ERR_FORMAT);
-					throw ErrDimension;*/
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				
-				//On récupère la ligne "Arcs=["
+				// On récupère la ligne "Arcs=["
 				fichier >> ligne;
 				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "Arcs=["))
 				{
-					/*CException ErrFormat(ERR_FORMAT);
-					throw ErrFormat;*/
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 				
-				//On remplit le tableau
+				// On remplit le tableau
 				puiTabArc = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
 				for (unsigned int uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 				{
@@ -121,13 +122,13 @@ class CParserGraphe : private CParser {
 				
 				for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 				{
-					//On récupère l'élement
+					// On récupère l'élement
 					fichier >> ligne;
 					cout << ligne << endl;
 					if (CParser::PARIsStringEqual(ligne, "]"))
 					{
-						/*CException ErrDimension(ERR_FORMAT);
-						throw ErrDimension;*/
+						CException ErrFormat(ERR_FORMAT);
+						throw ErrFormat;
 					}
 					CParser::PARSeparateString('=', ligne, resultat);
 					puiTabArc[uiBoucle][0] = atoi(resultat);
@@ -136,8 +137,8 @@ class CParserGraphe : private CParser {
 					cout << ligne << endl;
 					if (CParser::PARIsStringEqual(ligne, "]"))
 					{
-						/*CException ErrDimension(ERR_FORMAT);
-						throw ErrDimension;*/
+						CException ErrFormat(ERR_FORMAT);
+						throw ErrFormat;
 					}
 					CParser::PARSeparateString('=', ligne, resultat);
 					puiTabArc[uiBoucle][1] = atoi(resultat);
@@ -147,15 +148,16 @@ class CParserGraphe : private CParser {
 				cout << ligne << endl;
 				if (!CParser::PARIsStringEqual(ligne, "]"))
 				{
-					/*CException ErrDimension(ERR_FORMAT);
-					throw ErrDimension;*/
+					CException ErrFormat(ERR_FORMAT);
+					throw ErrFormat;
 				}
 
-				fichier.close();  // on ferme le fichier
+				fichier.close();  // Impossible d'ouvrir le fichier
 			}
 			else  // sinon
 			{
-				cerr << "Impossible d'ouvrir le fichier !" << endl;
+				CException ErrFichier(ERR_FICHIER);
+				throw ErrFichier;
 			}
 		}
 

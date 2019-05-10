@@ -47,26 +47,34 @@ void testGraphe()
 {
 	CGraphe graph;
 	
-	graph.GRPAjouterSommet(1);
-	graph.GRPAjouterSommet(2);
-	graph.GRPAjouterSommet(3);
+	try 
+	{
+		graph.GRPAjouterSommet(1);
+		graph.GRPAjouterSommet(2);
+		graph.GRPAjouterSommet(3);
+		
+		graph.GRPAjouterArc(1, 2);
+		graph.GRPAjouterArc(2, 3);
+		graph.GRPAjouterArc(3, 1);
+		
+		graph.GRPAjouterSommet(4);
+		graph.GRPAjouterArc(2, 4);
+		graph.GRPAjouterArc(4, 2);
+		graph.GRPAjouterArc(2, 1);
+		graph.GRPAjouterArc(3, 2);
+		
+		
+		graph.GRPAfficherGraphe();
+		cout << "=======================" << endl;
+		graph.GRPEnleverSommet(2);
+		graph.GRPEnleverArc(3, 1);
+		graph.GRPAfficherGraphe();
+		cout << "=======================" << endl;
+	}
+	catch(CException EXCErreur){
+		cerr << "Erreur : indices incorrects, cet arc n'existe pas" << endl;
+	}
 	
-	graph.GRPAjouterArc(1, 2);
-	graph.GRPAjouterArc(2, 3);
-	graph.GRPAjouterArc(3, 1);
-	
-	graph.GRPAfficherGraphe();
-	cout << "=======================" << endl;
-	graph.GRPEnleverSommet(1);
-	
-	graph.GRPAfficherGraphe();
-	
-	graph.GRPAjouterSommet(4);
-	graph.GRPAjouterArc(2, 4);
-	graph.GRPAjouterArc(4, 2);
-	
-	cout << "=======================" << endl;
-	graph.GRPAfficherGraphe();
 }
 
 int main(int argc, char ** argv)

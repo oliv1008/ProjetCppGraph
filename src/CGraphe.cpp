@@ -1,16 +1,22 @@
-#include "header/CGraphe.h"
-#include "header/CParserGraphe.h"
 #include <cstdlib>
 #include <iostream>
+#include "header/CGraphe.h"
+
+#define ERR_REALLOC		4
+#define ERR_NUMSOM		5
+
 
 using namespace std;
 
+/********* CONSTRUCTEURS *********/
+/** Constructeur par défaut **/
 CGraphe::CGraphe()
 {
 	pSOMGRPTabSommet = nullptr;
 	uiNombreSommet = 0;
 }
 
+/** Constructeur depuis un fichier **/
 CGraphe::CGraphe(const char * pcChemin)
 {
 	unsigned int uiNbSommets;
@@ -20,7 +26,9 @@ CGraphe::CGraphe(const char * pcChemin)
 	
 	CParserGraphe::PAGParserGraphe(pcChemin, uiNbSommets, uiNbArcs, puiTabSommets, puiTabArcs);
 }
+/********************************/
 
+/********** DESTRUCTEUR *********/ 
 CGraphe::~CGraphe()
 {
 	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
@@ -29,7 +37,9 @@ CGraphe::~CGraphe()
 	}
 	free(pSOMGRPTabSommet);
 }
+/********************************/
 
+/********** ACCESSEURS **********/ 
 CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 {
 	return pSOMGRPTabSommet[uiNumero];
@@ -49,8 +59,8 @@ void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 	}
 	else
 	{
-		// EXCEPTION
-		cout << "erreur reallocation lors de l'ajout d'un sommet" << endl;
+		CException ErrRealloc(ERR_REALLOC);
+		throw ErrRealloc;
 	}
 }
 
@@ -63,18 +73,23 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
 		{
-			// On supprime tous les arcs liés à ce sommet
-			// from CE SOMMET to LES AUTRES
-			for(unsigned int uiBoucleSom = 0; uiBoucleSom < pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcPartant(); uiBoucleSom++)
+			unsigned int uiArcsPartants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcPartant();
+			unsigned int uiArcsArrivants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcArrivant();
+			
+			cout << "[GRPEnleverSommet] Sommet : " << uiNumero << endl;
+			cout << "[GRPEnleverSommet] Arcs partants : " << uiArcsPartants << endl;
+			cout << "[GRPEnleverSommet] Arcs arrivants : " << uiArcsArrivants << endl;
+			
+			// Arcs partants (from this, to other)
+			for(unsigned int uiBoucleSom = 0; uiBoucleSom < uiArcsPartants; uiBoucleSom++)
 			{
-				cout << "Suppression de l'arc (from " << uiNumero << " to " << pSOMGRPTabSommet[uiBoucle]->SOMLireArcPartant()[uiBoucleSom]->ARCLireDestination() << ")\n";
-				GRPEnleverArc(uiNumero, pSOMGRPTabSommet[uiBoucle]->SOMLireArcPartant()[uiBoucleSom]->ARCLireDestination());
+				GRPEnleverArc(uiNumero, pSOMGRPTabSommet[uiBoucle]->SOMLireArcPartant()[0]->ARCLireDestination());
 			}
-			// from LES AUTRES to CE SOMMET
-			for(unsigned int uiBoucleSom = 0; uiBoucleSom < pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcArrivant(); uiBoucleSom++)
+			
+			// Arcs arrivant (from other, to this)
+			for(unsigned int uiBoucleSom = 0; uiBoucleSom < uiArcsArrivants; uiBoucleSom++)
 			{
-				cout << "Suppression de l'arc (from " << pSOMGRPTabSommet[uiBoucle]->SOMLireArcArrivant()[uiBoucleSom]->ARCLireDestination() << " to " << uiNumero << ")\n";
-				GRPEnleverArc(pSOMGRPTabSommet[uiBoucle]->SOMLireArcArrivant()[uiBoucleSom]->ARCLireDestination(), uiNumero);
+				GRPEnleverArc(pSOMGRPTabSommet[uiBoucle]->SOMLireArcArrivant()[0]->ARCLireDestination(), uiNumero);
 			}
 			
 			// On supprime le sommet et on réarrange le tableau
@@ -96,13 +111,15 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 			}
 			else
 			{
-				// EXCEPTION
-				cout << "erreur reallocation lors de la suppression d'un sommet" << endl;
+				CException ErrRealloc(ERR_REALLOC);
+				throw ErrRealloc;
 			}
 		}
 	}
 }
+/*******************************/ 
 
+/*********** METHODES **********/
 void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 {
 	bool bTrouveFrom = false, bTrouveTo = false;
@@ -124,8 +141,8 @@ void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 	}
 	
 	if(!(bTrouveFrom && bTrouveTo)){
-		// EXCEPTION
-		cerr << "Erreur : calisse tu t'es planté dans les numéros de sommets" << endl;
+		CException ErrNumSom(ERR_NUMSOM);
+		throw ErrNumSom;
 	}
 	
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMAjouterArcPartant(new CArc(uiTo));
@@ -154,12 +171,12 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 	}
 	
 	if(!(bTrouveFrom && bTrouveTo)){
-		// EXCEPTION
-		cerr << "Erreur : calisse tu t'es planté dans les numéros de sommets" << endl;
+		CException ErrNumSom(ERR_NUMSOM);
+		throw ErrNumSom;
 	}
 	
+	cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMEnleverArcPartant(uiTo);
-
 	pSOMGRPTabSommet[uiIndiceTo]->SOMEnleverArcArrivant(uiFrom);
 }
 
@@ -170,3 +187,4 @@ void CGraphe::GRPAfficherGraphe()
 		pSOMGRPTabSommet[uiBoucle]->SOMAfficherSommet();
 	}
 }
+/*******************************/ 

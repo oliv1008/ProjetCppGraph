@@ -1,8 +1,6 @@
 #ifndef CEXCEPTION
 #define CEXCEPTION
 
-#include <iostream>
-
 class CException 
 {
 	private :
@@ -11,15 +9,12 @@ class CException
 		
 	public :
 	
-		// Constructeurs
-		CException(unsigned int uiEXCErreur);
+		// Constructeur
+		CException(unsigned int uiErreur);
 		
 		// Accesseurs
 		unsigned int EXCLireErreur();
-		void EXCModifierErreur(unsigned int uiEXCErreur);
-		
-		// Méthodes
-		void EXCAfficherErreur();
+		void EXCModifierErreur(unsigned int uiErreur);
 };
 
 #endif

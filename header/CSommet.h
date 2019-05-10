@@ -20,7 +20,7 @@ class CSommet
 		CSommet(unsigned int uiNumero);
 		~CSommet();
 		
-		// Setter & Getter
+		// Accesseurs
 		unsigned int SOMLireNumero();
 		void SOMModifierNumero(unsigned int uiNumero);
 		
@@ -34,8 +34,8 @@ class CSommet
 		
 		unsigned int SOMLireCompteurArcArrivant();
 		unsigned int SOMLireCompteurArcPartant();
+		
 		// Methodes
-			//Affiche toute les infos du sommet (numéro & liste d'arc arrivant + partant)
 		void SOMAfficherSommet();
 };
 

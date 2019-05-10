@@ -2,6 +2,7 @@
 #define CGRAPHE
 
 #include "header/CSommet.h"
+#include "header/CParserGraphe.h"
 
 class CGraphe
 {
@@ -17,7 +18,7 @@ class CGraphe
 		CGraphe(const char * pcChemin);
 		~CGraphe();
 		
-		// Setter & Getter
+		// Accesseurs
 		CSommet * GRPLireSommet(unsigned int uiNumero);
 		void GRPAjouterSommet(unsigned int uiNumero);
 		void GRPEnleverSommet(unsigned int uiNumero);

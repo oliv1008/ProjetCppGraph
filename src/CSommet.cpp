@@ -1,10 +1,11 @@
-#include "header/CSommet.h"
 #include <cstdlib>
 #include <iostream>
+#include "header/CSommet.h"
 
 using namespace std;
 
-// constructeurs et destructeur
+/********* CONSTRUCTEURS *********/
+/** Constructeur par défaut **/
 CSommet::CSommet()
 {
 	uiSOMNumero = 0;
@@ -14,6 +15,7 @@ CSommet::CSommet()
 	uiCompteurArcPartant = 0;
 }
 
+/** Constructeur de confort **/
 CSommet::CSommet(unsigned int uiNumero)
 {
 	uiSOMNumero = uiNumero;
@@ -22,7 +24,9 @@ CSommet::CSommet(unsigned int uiNumero)
 	uiCompteurArcArrivant = 0;
 	uiCompteurArcPartant = 0;
 }
+/********************************/
 
+/********** DESTRUCTEUR *********/ 
 CSommet::~CSommet()
 {
 	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcArrivant; uiBoucle++)
@@ -37,8 +41,9 @@ CSommet::~CSommet()
 	}
 	free(pARCSOMPartant);
 }
+/********************************/
 
-// accesseurs
+/********** ACCESSEURS **********/ 
 unsigned int CSommet::SOMLireNumero()
 {
 	return uiSOMNumero;
@@ -77,13 +82,13 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 	{
 		if (pARCSOMArrivant[uiBoucle]->ARCLireDestination() == uiDestination)
 		{
-			//On supprime l'arc et on réarrange le tableau
+			// On supprime l'arc et on réarrange le tableau
 			delete pARCSOMArrivant[uiBoucle];
 			for (unsigned int uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcArrivant - 1; uiBoucleDel++)
 			{
 				pARCSOMArrivant[uiBoucleDel] = pARCSOMArrivant[uiBoucleDel + 1];
 			}
-			//On réalloue le tableau
+			// On réalloue le tableau
 			pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiCompteurArcArrivant - 1));
 			
 			if (pARCTemp != nullptr || uiCompteurArcArrivant == 1)
@@ -129,13 +134,13 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 	{
 		if (pARCSOMPartant[uiBoucle]->ARCLireDestination() == uiDestination)
 		{
-			//On supprime l'arc et on réarrange le tableau
+			// On supprime l'arc et on réarrange le tableau
 			delete pARCSOMPartant[uiBoucle];
 			for (unsigned int uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcPartant - 1; uiBoucleDel++)
 			{
 				pARCSOMPartant[uiBoucleDel] = pARCSOMPartant[uiBoucleDel + 1];
 			}
-			//On réalloue le tableau
+			// On réalloue le tableau
 			pARCTemp = (CArc**)realloc(pARCSOMPartant, sizeof(CArc*) * (uiCompteurArcPartant - 1));
 			
 			if (pARCTemp != nullptr || uiCompteurArcPartant == 1)
@@ -172,8 +177,9 @@ CArc ** CSommet::SOMLireArcPartant()
 {
 	return pARCSOMPartant;
 }
+/*******************************/ 
 
-// méthodes
+/*********** METHODES **********/
 void CSommet::SOMAfficherSommet()
 {
 	cout << "S" << uiSOMNumero << endl;
@@ -188,3 +194,4 @@ void CSommet::SOMAfficherSommet()
 		cout << "\tArc partant vers " << pARCSOMPartant[uiBoucleP]->ARCLireDestination() << endl;
 	}
 }
+/*******************************/ 
