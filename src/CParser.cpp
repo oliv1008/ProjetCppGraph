@@ -2,11 +2,6 @@
 
 using namespace std;
 
-CParser::CParser()
-{
-	
-}
-
 CParser::CParser(const char * pcChemin)
 {
 	fichier.open(pcChemin, ios::in);
@@ -14,7 +9,7 @@ CParser::CParser(const char * pcChemin)
 
 CParser::~CParser()
 {
-	if (fichier.is_open())
+	if(fichier.is_open())
 	{
 		fichier.close();
 	}
@@ -28,11 +23,22 @@ void CParser::PAROuvrirFichier(const char * pcChemin)
 	}
 	else
 	{
-		CException ErrAccesFichier(ERR_ACCES_FICHIER);
-		throw ErrAccesFichier;
+		CException ErrFichier(ERR_FICHIER);
+		throw ErrFichier;
 	}
 }
 
+/***********************************************************************************
+**** Nom: PARLireLigne		                                            		****
+************************************************************************************
+**** Lis une ligne et la sépare en 2 parties : balise et résultat               ****
+************************************************************************************
+**** Précondition: -															****
+**** Entrée: pcBalise : char*, pcResultat : char*								****
+**** Entraîne: la modification de pcBalise et de pcResultat						****
+**** Exemple: "NBSommets=3" ---> pcBalise = "NBSommets", pcResultat = "3"		**** 
+**** Sortie: Rien																****
+***********************************************************************************/
 void CParser::PARLireLigne(char * pcBalise, char * pcResultat)
 {
 	if (fichier.is_open())
@@ -43,8 +49,8 @@ void CParser::PARLireLigne(char * pcBalise, char * pcResultat)
 	}
 	else
 	{
-		CException ErrAccesFichier(ERR_ACCES_FICHIER);
-		throw ErrAccesFichier;
+		CException ErrFichier(ERR_FICHIER);
+		throw ErrFichier;
 	}
 }
 

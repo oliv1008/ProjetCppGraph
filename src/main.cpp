@@ -5,8 +5,18 @@ using namespace std;
 
 void test()
 {
-	CGraphe pGRPGraphe("fichier.txt");
-	pGRPGraphe.GRPAfficherGraphe();
+	try {
+		CGraphe pGRPGraphe("fichier.txt");
+		pGRPGraphe.GRPAfficherGraphe();
+		
+	} catch(CException EXCErreur){
+		switch(EXCErreur.EXCLireErreur()){
+			case ERR_FORMAT : cerr << "Erreur format" << endl; break;
+			case ERR_NUMERIQUE : cerr << "Erreur numérique" << endl; break;
+			case ERR_FICHIER : cerr << "Erreur fichier" << endl; break;
+		}
+		exit(0);
+	}	
 }
 
 void testGraphe()
