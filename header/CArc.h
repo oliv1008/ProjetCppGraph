@@ -1,9 +1,12 @@
 #ifndef CARC 
 #define CARC
 
+#include "header/CException.h"
+
 class CArc
 {
 	private:
+	
 /*
  * ATTENTION : le nom "Destination" est mal choisi, l'attribut ne correspond pas au sens 
  * de l'arc mais au numéro du sommet qui se trouve "de l'autre cote"
@@ -19,7 +22,7 @@ class CArc
 		CArc();
 		CArc(unsigned int uiDestination);
 		
-		// Setter & Getter
+		// Accesseurs
 		unsigned int ARCLireDestination();
 		void ARCModifierDestination(unsigned int uiDestination);
 };

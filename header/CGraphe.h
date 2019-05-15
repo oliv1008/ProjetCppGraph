@@ -2,6 +2,11 @@
 #define CGRAPHE
 
 #include "header/CSommet.h"
+#include "header/CParserGraphe.h"
+
+// Codes d'exceptions
+#define ERR_REALLOC		4
+#define ERR_NUMSOM		5
 
 class CGraphe
 {
@@ -17,9 +22,9 @@ class CGraphe
 		CGraphe(const char * pcChemin);
 		~CGraphe();
 		
-		// Setter & Getter
+		// Accesseurs
 		CSommet * GRPLireSommet(unsigned int uiNumero);
-		void GRPAjouterSommet(CSommet *pSOMSommet);
+		void GRPAjouterSommet(unsigned int uiNumero);
 		void GRPEnleverSommet(unsigned int uiNumero);
 		
 		// Methodes
