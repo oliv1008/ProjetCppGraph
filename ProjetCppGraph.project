@@ -9,7 +9,6 @@
     <File Name="src/CException.cpp"/>
     <File Name="src/CArc.cpp"/>
     <File Name="src/main.cpp"/>
-    <File Name="src/CParserGraphe.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="header">
     <File Name="header/CException.h"/>
@@ -17,7 +16,6 @@
     <File Name="header/CSommet.h"/>
     <File Name="header/CGraphe.h"/>
     <File Name="header/CParser.h"/>
-    <File Name="header/CParserGraphe.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

@@ -39,8 +39,9 @@ void test()
 	delete pARCArc1;
 	delete pARCArc2;*/
 	
-	CGraphe * pGRPGraphe = new CGraphe("fichier.txt");
-	delete pGRPGraphe;
+	CGraphe pGRPGraphe("fichier.txt");
+	pGRPGraphe.GRPAfficherGraphe();
+	//delete pGRPGraphe;
 }
 
 int main(int argc, char ** argv)

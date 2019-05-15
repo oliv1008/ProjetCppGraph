@@ -1,5 +1,52 @@
 #include "header/CParser.h"
 
+using namespace std;
+
+CParser::CParser()
+{
+	
+}
+
+CParser::CParser(const char * pcChemin)
+{
+	fichier.open(pcChemin, ios::in);
+}
+
+CParser::~CParser()
+{
+	if (fichier.is_open())
+	{
+		fichier.close();
+	}
+}
+
+void CParser::PAROuvrirFichier(const char * pcChemin)
+{
+	if (!fichier.is_open())
+	{
+		fichier.open(pcChemin, ios::in);
+	}
+	else
+	{
+		cout << "Erreur ouverture fichier, exception" << endl;
+	}
+}
+
+void CParser::PARLireLigne(char * pcBalise, char * pcResultat)
+{
+	if (fichier.is_open())
+	{
+		fichier >> pcBalise;
+		cout << pcBalise << endl;
+		PARSeparateString('=', pcBalise, pcResultat);
+	}
+	else
+	{
+		cout << "Erreur lecture ligne, exception" << endl;
+	}
+}
+
+
 /***********************************************************************************
 **** Nom: PARSeparateString		                                                ****
 ************************************************************************************
