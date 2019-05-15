@@ -10,6 +10,7 @@
 #define ERR_FICHIER 	3
 #define ERR_REALLOC		4
 #define ERR_NUMSOM		5
+#define ERR_DOUBLON		6
 
 class CGraphe
 {
@@ -27,10 +28,12 @@ class CGraphe
 		
 		// Accesseurs
 		CSommet * GRPLireSommet(unsigned int uiNumero);
-		void GRPAjouterSommet(unsigned int uiNumero);
-		void GRPEnleverSommet(unsigned int uiNumero);
 		
 		// Methodes
+		bool GRPContientSommet(unsigned int uiNumero);
+		void GRPAjouterSommet(unsigned int uiNumero);
+		void GRPEnleverSommet(unsigned int uiNumero);
+		bool GRPContientArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPAfficherGraphe();
