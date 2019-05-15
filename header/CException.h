@@ -1,6 +1,15 @@
 #ifndef CEXCEPTION
 #define CEXCEPTION
 
+/* Liste exceptions (définies dans CGraphe.h)
+ * #define ERR_FORMAT    	1
+ * #define ERR_NUMERIQUE 	2
+ * #define ERR_FICHIER 		3
+ * #define ERR_REALLOC		4
+ * #define ERR_NUMSOM		5
+ * 
+ */
+
 class CException 
 {
 	private :
