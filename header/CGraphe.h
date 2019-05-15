@@ -4,6 +4,7 @@
 #include "header/CSommet.h"
 #include "header/CParserGraphe.h"
 
+// Codes d'exceptions
 #define ERR_REALLOC		4
 #define ERR_NUMSOM		5
 

@@ -36,31 +36,55 @@ CGraphe::~CGraphe()
 /********************************/
 
 /********** ACCESSEURS **********/ 
+
+/***********************************************************************************
+**** Nom: GRPLireSommet		                                                    ****
+************************************************************************************
+**** Permet de renvoyer un Sommet en fonction de son numéro                     ****
+************************************************************************************
+**** Précondition: uiNumero représente bien un sommet					        ****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: -								    							****
+**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+***********************************************************************************/
 CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 {
+	unsigned int uiBoucle = 0;
 	bool bTrouve = false;
-	// Gestion exception
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
+	
+	/***** Gestion exception *****/
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
 		{
 			bTrouve = true;
 		}
 	}
-	
 	if(!bTrouve)
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
+	/*****************************/
 	
 	return pSOMGRPTabSommet[uiNumero];
 }
 
+/***********************************************************************************
+**** Nom: GRPAjouterSommet		                                                ****
+************************************************************************************
+**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 {
 	CSommet **pSOMTemp;
 	
+	// Réallocation du tableau
 	pSOMTemp = (CSommet **)realloc(pSOMGRPTabSommet, (uiNombreSommet + 1) * sizeof(CSommet *));
 	
 	if (pSOMTemp != nullptr)
@@ -69,23 +93,37 @@ void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 		pSOMGRPTabSommet[uiNombreSommet] = new CSommet(uiNumero);
 		uiNombreSommet++;
 	}
+	/***** Gestion exception *****/
 	else
-	{
+	{	// Erreur realloc
 		CException ErrRealloc(ERR_REALLOC);
 		throw ErrRealloc;
 	}
+	/*****************************/
 }
 
+/***********************************************************************************
+**** Nom: GRPAjouterSommet		                                                ****
+************************************************************************************
+**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 {
 	cout << "# Suppression du sommet " << uiNumero << "..." << endl;
  	
 	CSommet ** pSOMTemp;
 	bool bSommetDel = true;
-	
-	
 	bool bTrouve = false;
-	// Gestion exception
+	
+	unsigned int uiBoucle = 0;
+	unsigned int uiBoucleSom = 0;
+	
+	/***** Gestion exception *****/
 	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
@@ -93,19 +131,20 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 			bTrouve = true;
 		}
 	}
-	
 	if(!bTrouve)
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
+	/*****************************/
 	
-	
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && bSommetDel; uiBoucle++)
+	// On parcours la liste des sommets
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet && bSommetDel; uiBoucle++)
 	{
+		// Quand on trouve celui associé à uiNumero...
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
 		{
-			// On supprimes tous les arcs liés à ce sommet
+			// On supprime tous les arcs liés à ce sommet
 			unsigned int uiArcsPartants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcPartant();
 			unsigned int uiArcsArrivants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcArrivant();
 			
@@ -114,20 +153,19 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 			cout << "[GRPEnleverSommet] Arcs arrivants : " << uiArcsArrivants << endl;
 			
 			// Arcs partants
-			for(unsigned int uiBoucleSom = 0; uiBoucleSom < uiArcsPartants; uiBoucleSom++)
+			for(uiBoucleSom = 0; uiBoucleSom < uiArcsPartants; uiBoucleSom++)
 			{
 				GRPEnleverArc(uiNumero, pSOMGRPTabSommet[uiBoucle]->SOMLireArcPartant()[0]->ARCLireDestination());
 			}
 			
-			// Arcs arrivant
-			for(unsigned int uiBoucleSom = 0; uiBoucleSom < uiArcsArrivants; uiBoucleSom++)
+			// Arcs arrivants
+			for(uiBoucleSom = 0; uiBoucleSom < uiArcsArrivants; uiBoucleSom++)
 			{
 				GRPEnleverArc(pSOMGRPTabSommet[uiBoucle]->SOMLireArcArrivant()[0]->ARCLireDestination(), uiNumero);
 			}
 			
 			// On supprime le sommet et on réarrange le tableau
 			delete pSOMGRPTabSommet[uiBoucle];
-			
 			for (unsigned int uiBoucleDel = uiBoucle; uiBoucleDel < uiNombreSommet - 1; uiBoucleDel++)
 			{
 				pSOMGRPTabSommet[uiBoucleDel] = pSOMGRPTabSommet[uiBoucleDel + 1];
@@ -142,17 +180,30 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 				uiNombreSommet--;
 				bSommetDel = false;
 			}
+			/***** Gestion exception *****/
 			else
 			{	// Erreur réallocation
 				CException ErrRealloc(ERR_REALLOC);
 				throw ErrRealloc;
 			}
+			/*****************************/
 		}
 	}	
 }
 /*******************************/ 
 
 /*********** METHODES **********/
+
+/***********************************************************************************
+**** Nom: GRPAjouterArc		                                                	****
+************************************************************************************
+**** Permet d'ajouter un nouveau arc au graphe			                    	****
+************************************************************************************
+**** Précondition: uiFrom et uiTo représentent bien des sommets					****
+**** Entrée: uiFrom : unsigned int, uiTo : unsigned int					        ****
+**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 {
 	bool bTrouveFrom = false, bTrouveTo = false;
@@ -182,6 +233,16 @@ void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 	pSOMGRPTabSommet[uiIndiceTo]->SOMAjouterArcArrivant(new CArc(uiFrom));
 }
 
+/***********************************************************************************
+**** Nom: GRPAjouterSommet		                                                ****
+************************************************************************************
+**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 {
 	cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
@@ -213,6 +274,16 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 	pSOMGRPTabSommet[uiIndiceTo]->SOMEnleverArcArrivant(uiFrom);
 }
 
+/***********************************************************************************
+**** Nom: GRPAjouterSommet		                                                ****
+************************************************************************************
+**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CGraphe::GRPAfficherGraphe()
 {
 	for(unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
