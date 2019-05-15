@@ -32,8 +32,8 @@ CGraphe::CGraphe(const char * pcChemin)
 	}
 	else if (!CParser::PARIsStringANumericalValue(pcResultat))
 	{
-		/*CException ErrFormat(ERR_NUMERIQUE);
-		throw ErrFormat;*/
+		CException ErrFormat(ERR_NUMERIQUE);
+		throw ErrFormat;
 	}
 	uiNbSommets = atoi(pcResultat);
 	
@@ -145,7 +145,7 @@ CGraphe::~CGraphe()
 {
 	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
-		delete pSOMGRPTabSommet[uiBoucle];
+		GRPEnleverSommet(pSOMGRPTabSommet[uiBoucle]->SOMLireNumero());
 	}
 	free(pSOMGRPTabSommet);
 }
@@ -177,9 +177,8 @@ CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 		}
 	}
 	if(!bTrouve)
-	{	// Erreur sommet non trouvé
-		CException ErrNumSom(ERR_NUMSOM);
-		throw ErrNumSom;
+	{
+		return nullptr;
 	}
 	/*****************************/
 	
