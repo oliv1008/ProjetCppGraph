@@ -16,6 +16,7 @@ CGraphe::CGraphe()
 /** Constructeur depuis un fichier **/
 CGraphe::CGraphe(const char * pcChemin)
 {
+	unsigned int uiBoucle = 0;
 	unsigned int uiNbSommets;
 	unsigned int uiNbArcs;
 	unsigned int * puiTabSommets;
@@ -51,7 +52,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	uiNbArcs = atoi(pcResultat);
 	
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-	if (!CParser::PARIsStringEqual(pcBalise, "Sommets=["))
+	if (!CParser::PARIsStringEqual(pcBalise, "Sommets"))
 	{
 		CException ErrFormat(ERR_FORMAT);
 		throw ErrFormat;
@@ -59,7 +60,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	
 	//On remplit le tableau
 	puiTabSommets = (unsigned int *)malloc(uiNbSommets * sizeof(unsigned int));
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
 		//On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
@@ -68,7 +69,7 @@ CGraphe::CGraphe(const char * pcChemin)
 			CException ErrDimension(ERR_FORMAT);
 			throw ErrDimension;
 		}
-		else if (!CParser::PARIsStringANumericalValue(pcBalise))
+		else if (!CParser::PARIsStringANumericalValue(pcResultat))
 		{
 			CException ErrNumerique(ERR_NUMERIQUE);
 			throw ErrNumerique;
@@ -86,18 +87,18 @@ CGraphe::CGraphe(const char * pcChemin)
 	
 	//On récupère la ligne "Arcs=["
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-	if (!CParser::PARIsStringEqual(pcBalise, "Arcs=["))
+	if (!CParser::PARIsStringEqual(pcBalise, "Arcs"))
 	{
 		CException ErrFormat(ERR_FORMAT);
 		throw ErrFormat;
 	}
 	//On remplit le tableau
 	puiTabArcs = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 	{
 		puiTabArcs[uiBoucle] = (unsigned int *)malloc(2 * sizeof(unsigned int));
 	}
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
 		//On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
@@ -124,16 +125,16 @@ CGraphe::CGraphe(const char * pcChemin)
 		throw ErrDimension;
 	}
 	
-	//Les données du fichiers ont été récupérées sans problèmes, on créer le graphe
+	// Les données du fichier ont été récupérées sans problèmes, on peut créer le graphe
 	
 	pSOMGRPTabSommet = nullptr;
 	uiNombreSommet = 0;
 	
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
 		GRPAjouterSommet(puiTabSommets[uiBoucle]);
 	}
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
 		GRPAjouterArc(puiTabArcs[uiBoucle][0], puiTabArcs[uiBoucle][1]);
 	}
