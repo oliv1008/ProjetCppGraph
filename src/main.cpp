@@ -52,13 +52,11 @@ void testGraphe()
 	}
 	graph.GRPAfficherGraphe();
 	cout << "=======================" << endl;
-
-	
 }
 
 int main(int argc, char ** argv)
 {
-	//test();
-	testGraphe();
+	test();
+	//testGraphe();
 	return 0;
 }

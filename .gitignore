@@ -1,4 +1,6 @@
+*.tags
 .codelite/*
+.Debug/*
 
 # Prerequisites
 *.d

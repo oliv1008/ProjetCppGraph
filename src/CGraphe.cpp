@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "header/CGraphe.h"
+#include "header/CParser.h"
 
 using namespace std;
 
@@ -19,8 +20,123 @@ CGraphe::CGraphe(const char * pcChemin)
 	unsigned int uiNbArcs;
 	unsigned int * puiTabSommets;
 	unsigned int ** puiTabArcs;
+	char pcBalise[256];
+	char pcResultat[256];
+	CParser PARParserGraphe(pcChemin);
 	
-	CParserGraphe::PAGParserGraphe(pcChemin, uiNbSommets, uiNbArcs, puiTabSommets, puiTabArcs);
+	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+	if (!CParser::PARIsStringEqual(pcBalise, "NBSommets"))
+	{
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
+	}
+	else if (!CParser::PARIsStringANumericalValue(pcResultat))
+	{
+		/*CException ErrFormat(ERR_NUMERIQUE);
+		throw ErrFormat;*/
+	}
+	uiNbSommets = atoi(pcResultat);
+	
+	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+	if (!CParser::PARIsStringEqual(pcBalise, "NBArcs"))
+	{
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
+	}
+	else if (!CParser::PARIsStringANumericalValue(pcResultat))
+	{
+		CException ErrNumerique(ERR_NUMERIQUE);
+		throw ErrNumerique;
+	}
+	uiNbArcs = atoi(pcResultat);
+	
+	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+	if (!CParser::PARIsStringEqual(pcBalise, "Sommets=["))
+	{
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
+	}
+	
+	//On remplit le tableau
+	puiTabSommets = (unsigned int *)malloc(uiNbSommets * sizeof(unsigned int));
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	{
+		//On récupère l'élement
+		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+		if (CParser::PARIsStringEqual(pcBalise, "]"))
+		{
+			CException ErrDimension(ERR_FORMAT);
+			throw ErrDimension;
+		}
+		else if (!CParser::PARIsStringANumericalValue(pcBalise))
+		{
+			CException ErrNumerique(ERR_NUMERIQUE);
+			throw ErrNumerique;
+		}
+					
+		puiTabSommets[uiBoucle] = atoi(pcResultat);
+	}
+				
+	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+	if (!CParser::PARIsStringEqual(pcBalise, "]"))
+	{
+		CException ErrDimension(ERR_FORMAT);
+		throw ErrDimension;
+	}
+	
+	//On récupère la ligne "Arcs=["
+	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+	if (!CParser::PARIsStringEqual(pcBalise, "Arcs=["))
+	{
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
+	}
+	//On remplit le tableau
+	puiTabArcs = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
+	{
+		puiTabArcs[uiBoucle] = (unsigned int *)malloc(2 * sizeof(unsigned int));
+	}
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	{
+		//On récupère l'élement
+		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+		if (CParser::PARIsStringEqual(pcBalise, "]"))
+		{
+			CException ErrDimension(ERR_FORMAT);
+			throw ErrDimension;
+		}
+		puiTabArcs[uiBoucle][0] = atoi(pcResultat);
+			
+		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+		if (CParser::PARIsStringEqual(pcBalise, "]"))
+		{
+			CException ErrDimension(ERR_FORMAT);
+			throw ErrDimension;
+		}
+		puiTabArcs[uiBoucle][1] = atoi(pcResultat);
+	}
+	
+	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
+	if (!CParser::PARIsStringEqual(pcBalise, "]"))
+	{
+		CException ErrDimension(ERR_FORMAT);
+		throw ErrDimension;
+	}
+	
+	//Les données du fichiers ont été récupérées sans problèmes, on créer le graphe
+	
+	pSOMGRPTabSommet = nullptr;
+	uiNombreSommet = 0;
+	
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	{
+		GRPAjouterSommet(puiTabSommets[uiBoucle]);
+	}
+	for (unsigned int uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	{
+		GRPAjouterArc(puiTabArcs[uiBoucle][0], puiTabArcs[uiBoucle][1]);
+	}
 }
 /********************************/
 
