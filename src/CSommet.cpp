@@ -95,25 +95,30 @@ void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 **** Permet d'enlever un arc arrivant en fonction de sa destination             ****
 ************************************************************************************
 **** Précondition: uiDestination représente bien un sommet					    ****
-**** Entrée: uiNumero : unsigned int					                        ****
-**** Entraîne: -								    							****
-**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+**** Entrée: uiDestination : unsigned int					                    ****
+**** Entraîne: la suppression d'un arc arrivant								    ****
+**** Sortie: Rien																****
 ***********************************************************************************/
 void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 {
 	CArc ** pARCTemp;
 	bool bArcDel = true;
+	unsigned int uiBoucle = 0;
+	unsigned int uiBoucleDel = 0;
 	
-	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcArrivant && bArcDel; uiBoucle++)
+	// On parcourt la liste des arcs arrivants
+	for (uiBoucle = 0; uiBoucle < uiCompteurArcArrivant && bArcDel; uiBoucle++)
 	{
+		// Quand on trouve celui associé à uiDestination...
 		if (pARCSOMArrivant[uiBoucle]->ARCLireDestination() == uiDestination)
 		{
 			// On supprime l'arc et on réarrange le tableau
 			delete pARCSOMArrivant[uiBoucle];
-			for (unsigned int uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcArrivant - 1; uiBoucleDel++)
+			for (uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcArrivant - 1; uiBoucleDel++)
 			{
 				pARCSOMArrivant[uiBoucleDel] = pARCSOMArrivant[uiBoucleDel + 1];
 			}
+			
 			// On réalloue le tableau
 			pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiCompteurArcArrivant - 1));
 			
@@ -123,11 +128,13 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 				uiCompteurArcArrivant--;
 				bArcDel = false;
 			}
+			/***** Gestion exception *****/
 			else
 			{	// Erreur réallocation
 				CException ErrRealloc(ERR_REALLOC);
 				throw ErrRealloc;
 			}
+			/*****************************/
 		}
 	}
 }
@@ -154,38 +161,45 @@ void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 		pARCSOMPartant[uiCompteurArcPartant] = pARCArc;
 		uiCompteurArcPartant++;
 	}
+	/***** Gestion exception *****/
 	else
 	{	// Erreur réallocation
 		CException ErrRealloc(ERR_REALLOC);
 		throw ErrRealloc;
 	}
+	/*****************************/
 }
 
 /***********************************************************************************
-**** Nom: GRPLireSommet		                                                    ****
+**** Nom: SOMEnleverArcPartant		                                            ****
 ************************************************************************************
-**** Permet de renvoyer un sommet en fonction de son numéro                     ****
+**** Permet d'enlever un arc partant en fonction de sa destination              ****
 ************************************************************************************
-**** Précondition: uiNumero représente bien un sommet					        ****
-**** Entrée: uiNumero : unsigned int					                        ****
-**** Entraîne: -								    							****
-**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+**** Précondition: uiDestination représente bien un sommet					    ****
+**** Entrée: uiDestination : unsigned int					                    ****
+**** Entraîne: la suppression d'un arc partant								    ****
+**** Sortie: Rien																****
 ***********************************************************************************/
 void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 {
 	CArc ** pARCTemp;
 	bool bArcDel = true;
+	unsigned int uiBoucle = 0;
+	unsigned int uiBoucleDel = 0;
 	
-	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcPartant && bArcDel; uiBoucle++)
+	// On parcourt la liste des arcs partants
+	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant && bArcDel; uiBoucle++)
 	{
+		// Quand on trouve celui associé à uiDestination...
 		if (pARCSOMPartant[uiBoucle]->ARCLireDestination() == uiDestination)
 		{
 			// On supprime l'arc et on réarrange le tableau
 			delete pARCSOMPartant[uiBoucle];
-			for (unsigned int uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcPartant - 1; uiBoucleDel++)
+			for (uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcPartant - 1; uiBoucleDel++)
 			{
 				pARCSOMPartant[uiBoucleDel] = pARCSOMPartant[uiBoucleDel + 1];
 			}
+			
 			// On réalloue le tableau
 			pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiCompteurArcPartant - 1) * sizeof(CArc *));
 			
@@ -195,11 +209,13 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 				uiCompteurArcPartant--;
 				bArcDel = false;
 			}
+			/***** Gestion exception *****/
 			else
 			{	// Erreur réallocation
 				CException ErrRealloc(ERR_REALLOC);
 				throw ErrRealloc;
 			}
+			/*****************************/
 		}
 	}
 }
@@ -228,14 +244,14 @@ CArc ** CSommet::SOMLireArcPartant()
 /*********** METHODES **********/
 
 /***********************************************************************************
-**** Nom: GRPLireSommet		                                                    ****
+**** Nom: SOMAfficherSommet		                                                ****
 ************************************************************************************
 **** Permet de renvoyer un sommet en fonction de son numéro                     ****
 ************************************************************************************
-**** Précondition: uiNumero représente bien un sommet					        ****
-**** Entrée: uiNumero : unsigned int					                        ****
-**** Entraîne: -								    							****
-**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+**** Précondition: -					        								****
+**** Entrée: Rien					                       						****
+**** Entraîne: l'affichage d'un sommet								    		****
+**** Sortie: Rien																****
 ***********************************************************************************/
 void CSommet::SOMAfficherSommet()
 {
