@@ -90,11 +90,11 @@ void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 }
 
 /***********************************************************************************
-**** Nom: GRPLireSommet		                                                    ****
+**** Nom: SOMEnleverArcArrivant		                                            ****
 ************************************************************************************
-**** Permet de renvoyer un sommet en fonction de son numéro                     ****
+**** Permet d'enlever un arc arrivant en fonction de sa destination             ****
 ************************************************************************************
-**** Précondition: uiNumero représente bien un sommet					        ****
+**** Précondition: uiDestination représente bien un sommet					    ****
 **** Entrée: uiNumero : unsigned int					                        ****
 **** Entraîne: -								    							****
 **** Sortie: *CGraphe, le sommet associé à uiNumero								****
