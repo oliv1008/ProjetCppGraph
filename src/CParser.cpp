@@ -21,9 +21,10 @@ void CParser::PARSeparateString(char cToken, char* pcStr1, char* pcStr2)
 {
 	bool bCopie = false;
 	unsigned int uiBoucleDst = 0;
+	unsigned int uiBoucleSrc = 0;
 	int uiIndiceFinStr = -1;
 	
-	for (unsigned int uiBoucleSrc = 0; pcStr1[uiBoucleSrc] != '\0'; uiBoucleSrc++)
+	for (uiBoucleSrc = 0; pcStr1[uiBoucleSrc] != '\0'; uiBoucleSrc++)
 	{
 		if (bCopie == true)
 		{
@@ -91,8 +92,9 @@ bool CParser::PARIsStringEqual(const char * pccStr1, const char * pccStr2)
 bool CParser::PARIsStringANumericalValue(const char * pcStr)
 {
 	bool bIsNumericalValue = true;
+	unsigned int uiBoucleStr = 0;
 	
-	for (unsigned int uiBoucleStr = 0; pcStr[uiBoucleStr] != '\0' && bIsNumericalValue; uiBoucleStr++)
+	for (uiBoucleStr = 0; pcStr[uiBoucleStr] != '\0' && bIsNumericalValue; uiBoucleStr++)
 	{
 		if ((pcStr[uiBoucleStr] < '0' || pcStr[uiBoucleStr] > '9') && pcStr[uiBoucleStr] != '.' && pcStr[uiBoucleStr] != '-')
 		{

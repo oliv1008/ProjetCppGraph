@@ -29,15 +29,17 @@ CSommet::CSommet(unsigned int uiNumero)
 /********** DESTRUCTEUR *********/ 
 CSommet::~CSommet()
 {
+	unsigned int uiBoucle = 0;
+	
 	// Suppression des arcs arrivants
-	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcArrivant; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiCompteurArcArrivant; uiBoucle++)
 	{
 		delete pARCSOMArrivant[uiBoucle];
 	}
 	free(pARCSOMArrivant);
 	
 	// Suppression des arcs partants
-	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
 	{
 		delete pARCSOMPartant[uiBoucle];
 	}
@@ -255,14 +257,17 @@ CArc ** CSommet::SOMLireArcPartant()
 ***********************************************************************************/
 void CSommet::SOMAfficherSommet()
 {
+	unsigned int uiBoucleA = 0;
+	unsigned int uiBoucleP = 0;
+	
 	cout << "S" << uiSOMNumero << endl;
 	cout << "Arc arrivant :" << endl;
-	for (unsigned int uiBoucleA = 0; uiBoucleA < uiCompteurArcArrivant; uiBoucleA++)
+	for (uiBoucleA = 0; uiBoucleA < uiCompteurArcArrivant; uiBoucleA++)
 	{
 		cout << "\tArc arrivant de " << pARCSOMArrivant[uiBoucleA]->ARCLireDestination() << endl;
 	}
 	cout << "Arc partant :" << endl;
-	for (unsigned int uiBoucleP = 0; uiBoucleP < uiCompteurArcPartant; uiBoucleP++)
+	for (uiBoucleP = 0; uiBoucleP < uiCompteurArcPartant; uiBoucleP++)
 	{
 		cout << "\tArc partant vers " << pARCSOMPartant[uiBoucleP]->ARCLireDestination() << endl;
 	}

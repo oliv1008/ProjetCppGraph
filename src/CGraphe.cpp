@@ -27,7 +27,9 @@ CGraphe::CGraphe(const char * pcChemin)
 /********** DESTRUCTEUR *********/ 
 CGraphe::~CGraphe()
 {
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	unsigned int uiBoucle = 0;
+	
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
 		delete pSOMGRPTabSommet[uiBoucle];
 	}
