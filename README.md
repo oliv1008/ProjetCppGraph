@@ -1,6 +1,6 @@
 # ProjetCppGraph
 
-TODO : \n
+TODO :
 -Gérer exceptions Parser
 -Gérer problèmes de doublons dans ajoutSommet, ajoutArc, etc ... (Vérifier si il n'existe pas plus de cas d'exception)
 -Finir de commenter
