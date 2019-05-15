@@ -27,8 +27,8 @@ CGraphe::CGraphe(const char * pcChemin)
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "NBSommets"))
 	{
-		/*CException ErrFormat(ERR_FORMAT);
-		throw ErrFormat;*/
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
 	}
 	else if (!CParser::PARIsStringANumericalValue(pcResultat))
 	{
@@ -40,21 +40,21 @@ CGraphe::CGraphe(const char * pcChemin)
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "NBArcs"))
 	{
-		/*CException ErrFormat(ERR_FORMAT);
-		throw ErrFormat;*/
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
 	}
 	else if (!CParser::PARIsStringANumericalValue(pcResultat))
 	{
-		/*CException ErrNumerique(ERR_NUMERIQUE);
-		throw ErrNumerique;*/
+		CException ErrNumerique(ERR_NUMERIQUE);
+		throw ErrNumerique;
 	}
 	uiNbArcs = atoi(pcResultat);
 	
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "Sommets=["))
 	{
-		/*CException ErrFormat(ERR_FORMAT);
-		throw ErrFormat;*/
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
 	}
 	
 	//On remplit le tableau
@@ -65,13 +65,13 @@ CGraphe::CGraphe(const char * pcChemin)
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 		if (CParser::PARIsStringEqual(pcBalise, "]"))
 		{
-			/*CException ErrDimension(ERR_FORMAT);
-			throw ErrDimension;*/
+			CException ErrDimension(ERR_FORMAT);
+			throw ErrDimension;
 		}
 		else if (!CParser::PARIsStringANumericalValue(pcBalise))
 		{
-			/*CException ErrNumerique(ERR_NUMERIQUE);
-			throw ErrNumerique;*/
+			CException ErrNumerique(ERR_NUMERIQUE);
+			throw ErrNumerique;
 		}
 					
 		puiTabSommets[uiBoucle] = atoi(pcResultat);
@@ -80,16 +80,16 @@ CGraphe::CGraphe(const char * pcChemin)
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "]"))
 	{
-		/*CException ErrDimension(ERR_FORMAT);
-		throw ErrDimension;*/
+		CException ErrDimension(ERR_FORMAT);
+		throw ErrDimension;
 	}
 	
 	//On récupère la ligne "Arcs=["
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "Arcs=["))
 	{
-		/*CException ErrFormat(ERR_FORMAT);
-		throw ErrFormat;*/
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
 	}
 	//On remplit le tableau
 	puiTabArcs = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
@@ -103,16 +103,16 @@ CGraphe::CGraphe(const char * pcChemin)
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 		if (CParser::PARIsStringEqual(pcBalise, "]"))
 		{
-			/*CException ErrDimension(ERR_FORMAT);
-			throw ErrDimension;*/
+			CException ErrDimension(ERR_FORMAT);
+			throw ErrDimension;
 		}
 		puiTabArcs[uiBoucle][0] = atoi(pcResultat);
 			
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 		if (CParser::PARIsStringEqual(pcBalise, "]"))
 		{
-			/*CException ErrDimension(ERR_FORMAT);
-			throw ErrDimension;*/
+			CException ErrDimension(ERR_FORMAT);
+			throw ErrDimension;
 		}
 		puiTabArcs[uiBoucle][1] = atoi(pcResultat);
 	}
@@ -120,8 +120,8 @@ CGraphe::CGraphe(const char * pcChemin)
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "]"))
 	{
-		/*CException ErrDimension(ERR_FORMAT);
-		throw ErrDimension;*/
+		CException ErrDimension(ERR_FORMAT);
+		throw ErrDimension;
 	}
 	
 	//Les données du fichiers ont été récupérées sans problèmes, on créer le graphe
@@ -156,7 +156,7 @@ CGraphe::~CGraphe()
 /***********************************************************************************
 **** Nom: GRPLireSommet		                                                    ****
 ************************************************************************************
-**** Permet de renvoyer un Sommet en fonction de son numéro                     ****
+**** Permet de renvoyer un sommet en fonction de son numéro                     ****
 ************************************************************************************
 **** Précondition: uiNumero représente bien un sommet					        ****
 **** Entrée: uiNumero : unsigned int					                        ****
@@ -219,13 +219,13 @@ void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 }
 
 /***********************************************************************************
-**** Nom: GRPAjouterSommet		                                                ****
+**** Nom: GRPEnleverSommet		                                                ****
 ************************************************************************************
-**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+**** Permet d'enlever un sommet en fonction de son numéro			            ****
 ************************************************************************************
-**** Précondition: -					        								****
+**** Précondition: uiNumero représente bien un sommet					        ****
 **** Entrée: uiNumero : unsigned int					                        ****
-**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Entraîne: la suppression d'un sommet et de tous ses arcs liés				****
 **** Sortie: Rien																****
 ***********************************************************************************/
 void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
@@ -240,7 +240,7 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 	unsigned int uiBoucleSom = 0;
 	
 	/***** Gestion exception *****/
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
 		{
@@ -313,19 +313,21 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 /***********************************************************************************
 **** Nom: GRPAjouterArc		                                                	****
 ************************************************************************************
-**** Permet d'ajouter un nouveau arc au graphe			                    	****
+**** Permet d'ajouter un nouvel arc au graphe			                    	****
 ************************************************************************************
 **** Précondition: uiFrom et uiTo représentent bien des sommets					****
 **** Entrée: uiFrom : unsigned int, uiTo : unsigned int					        ****
-**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Entraîne: l'ajout d'un nouvel arc au graphe								****
 **** Sortie: Rien																****
 ***********************************************************************************/
 void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 {
 	bool bTrouveFrom = false, bTrouveTo = false;
 	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
+	unsigned int uiBoucle = 0;
 	
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	/***** Gestion exception *****/
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiFrom)
 		{
@@ -339,24 +341,26 @@ void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 			bTrouveTo = true;
 		}
 	}
-	
-	if(!(bTrouveFrom && bTrouveTo)){
+	if(!(bTrouveFrom && bTrouveTo))
+	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
+	/*****************************/
 	
+	// Ajout des arcs partants et arrivants
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMAjouterArcPartant(new CArc(uiTo));
 	pSOMGRPTabSommet[uiIndiceTo]->SOMAjouterArcArrivant(new CArc(uiFrom));
 }
 
 /***********************************************************************************
-**** Nom: GRPAjouterSommet		                                                ****
+**** Nom: GRPEnleverArc		                                                	****
 ************************************************************************************
-**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+**** Permet d'enlever un arc en fonction de ses sommets de départ et d'arrivée	****
 ************************************************************************************
-**** Précondition: -					        								****
-**** Entrée: uiNumero : unsigned int					                        ****
-**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Précondition: uiFrom et uiTo représentent bien des sommets					****
+**** Entrée: uiFrom : unsigned int, uiTo : unsigned int					        ****
+**** Entraîne: la suppresion d'un arc											****
 **** Sortie: Rien																****
 ***********************************************************************************/
 void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
@@ -365,8 +369,10 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 	
 	bool bTrouveFrom = false, bTrouveTo = false;
 	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
+	unsigned int uiBoucle = 0;
 	
-	for (unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	/***** Gestion exception *****/
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiFrom)
 		{
@@ -375,34 +381,38 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 		}
 		
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiTo)
-		{
+		{	
 			uiIndiceTo = uiBoucle;
 			bTrouveTo = true;
 		}
 	}
-	
-	if(!(bTrouveFrom && bTrouveTo)){
+	if(!(bTrouveFrom && bTrouveTo))
+	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
+	/*****************************/
 	
+	// Suppression des arcs partants et arrivants
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMEnleverArcPartant(uiTo);
 	pSOMGRPTabSommet[uiIndiceTo]->SOMEnleverArcArrivant(uiFrom);
 }
 
 /***********************************************************************************
-**** Nom: GRPAjouterSommet		                                                ****
+**** Nom: GRPAfficherGraphe		                                                ****
 ************************************************************************************
-**** Permet d'ajouter un nouveau sommet au graphe			                    ****
+**** Permet d'afficher un graphe							                    ****
 ************************************************************************************
 **** Précondition: -					        								****
-**** Entrée: uiNumero : unsigned int					                        ****
-**** Entraîne: l'ajout d'un nouveau sommet au graphe							****
+**** Entrée: Rien										                        ****
+**** Entraîne: l'affichage du graphe											****
 **** Sortie: Rien																****
 ***********************************************************************************/
 void CGraphe::GRPAfficherGraphe()
 {
-	for(unsigned int uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	unsigned int uiBoucle = 0;
+	
+	for(uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
 		pSOMGRPTabSommet[uiBoucle]->SOMAfficherSommet();
 	}

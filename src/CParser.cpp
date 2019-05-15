@@ -28,7 +28,8 @@ void CParser::PAROuvrirFichier(const char * pcChemin)
 	}
 	else
 	{
-		cout << "Erreur ouverture fichier, exception" << endl;
+		CException ErrAccesFichier(ERR_ACCES_FICHIER);
+		throw ErrAccesFichier;
 	}
 }
 
@@ -42,7 +43,8 @@ void CParser::PARLireLigne(char * pcBalise, char * pcResultat)
 	}
 	else
 	{
-		cout << "Erreur lecture ligne, exception" << endl;
+		CException ErrAccesFichier(ERR_ACCES_FICHIER);
+		throw ErrAccesFichier;
 	}
 }
 

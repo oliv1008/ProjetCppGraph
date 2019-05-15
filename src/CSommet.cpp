@@ -29,16 +29,20 @@ CSommet::CSommet(unsigned int uiNumero)
 /********** DESTRUCTEUR *********/ 
 CSommet::~CSommet()
 {
+	// Suppression des arcs arrivants
 	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcArrivant; uiBoucle++)
 	{
 		delete pARCSOMArrivant[uiBoucle];
 	}
 	free(pARCSOMArrivant);
 	
+	// Suppression des arcs partants
 	for (unsigned int uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
 	{
 		delete pARCSOMPartant[uiBoucle];
 	}
+	
+	// Suppression du sommet
 	free(pARCSOMPartant);
 }
 /********************************/
@@ -54,6 +58,16 @@ void CSommet::SOMModifierNumero(unsigned int uiNumero)
 	uiSOMNumero = uiNumero;
 }
 
+/***********************************************************************************
+**** Nom: SOMAjouterArcArrivant		                                            ****
+************************************************************************************
+**** Permet d'ajouter un arc arrivant	                  						****
+************************************************************************************
+**** Précondition: pARCArc est un pointeur sur un arc valide					****
+**** Entrée: pARCArc : *CArc							                        ****
+**** Entraîne: l'ajout d'un arc arrivant au sommet								****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
@@ -66,13 +80,25 @@ void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 		pARCSOMArrivant[uiCompteurArcArrivant] = pARCArc;
 		uiCompteurArcArrivant++;
 	}
+	/***** Gestion exception *****/
 	else
 	{	// Erreur réallocation
 		CException ErrRealloc(ERR_REALLOC);
 		throw ErrRealloc;
 	}
+	/*****************************/
 }
 
+/***********************************************************************************
+**** Nom: GRPLireSommet		                                                    ****
+************************************************************************************
+**** Permet de renvoyer un sommet en fonction de son numéro                     ****
+************************************************************************************
+**** Précondition: uiNumero représente bien un sommet					        ****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: -								    							****
+**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+***********************************************************************************/
 void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 {
 	CArc ** pARCTemp;
@@ -106,6 +132,16 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 	}
 }
 
+/***********************************************************************************
+**** Nom: SOMAjouterArcPartant		                                            ****
+************************************************************************************
+**** Permet d'ajouter un arc partant                    						****
+************************************************************************************
+**** Précondition: pARCArc est un pointeur sur un arc valide					****
+**** Entrée: pARCArc : *CArc							                        ****
+**** Entraîne: l'ajout d'un arc partant au sommet								****
+**** Sortie: Rien																****
+***********************************************************************************/
 void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
@@ -125,6 +161,16 @@ void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 	}
 }
 
+/***********************************************************************************
+**** Nom: GRPLireSommet		                                                    ****
+************************************************************************************
+**** Permet de renvoyer un sommet en fonction de son numéro                     ****
+************************************************************************************
+**** Précondition: uiNumero représente bien un sommet					        ****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: -								    							****
+**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+***********************************************************************************/
 void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 {
 	CArc ** pARCTemp;
@@ -180,6 +226,17 @@ CArc ** CSommet::SOMLireArcPartant()
 /*******************************/ 
 
 /*********** METHODES **********/
+
+/***********************************************************************************
+**** Nom: GRPLireSommet		                                                    ****
+************************************************************************************
+**** Permet de renvoyer un sommet en fonction de son numéro                     ****
+************************************************************************************
+**** Précondition: uiNumero représente bien un sommet					        ****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: -								    							****
+**** Sortie: *CGraphe, le sommet associé à uiNumero								****
+***********************************************************************************/
 void CSommet::SOMAfficherSommet()
 {
 	cout << "S" << uiSOMNumero << endl;

@@ -3,6 +3,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <header/CException.h>
+
+#define ERR_ACCES_FICHIER 6
 
 class CParser {
 
