@@ -3,6 +3,7 @@
 
 #include "header/CArc.h"
 
+// Codes d'exceptions
 #define ERR_REALLOC		23
 
 class CSommet

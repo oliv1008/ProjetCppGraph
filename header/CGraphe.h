@@ -10,7 +10,7 @@
 #define ERR_REALLOC		23
 #define ERR_NUMSOM		24
 #define ERR_DOUBLON		25
-#define ERR_NUMARC 		26
+#define ERR_NUMARC		26
 
 class CGraphe
 {

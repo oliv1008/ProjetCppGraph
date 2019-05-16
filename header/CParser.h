@@ -15,14 +15,16 @@ class CParser {
 
 	public :
 
-		//Constructeurs & Destructeur
+		// Constructeurs & Destructeur
 		CParser();
 		CParser(const char * pcChemin);
 		~CParser();
-		//Getter & Setter
+		
+		// Accesseurs
 		void PAROuvrirFichier(const char * pcChemin);
 		void PARLireLigne(char * pcBalise, char * pcResultat);
-		//Methodes
+		
+		// Methodes
 		static void PARSeparateString(char cToken, char* pcStr1, char* pcStr2); 
 		static bool PARIsStringEqual(const char* pccStr1, const char* pccStr2);
 		static bool PARIsStringANumericalValue(const char * pcStr);

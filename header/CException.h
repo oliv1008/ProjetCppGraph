@@ -3,14 +3,16 @@
 
 /* Liste exceptions :
  * 
- * définies dans CGraphe.h
- * #define ERR_FORMAT    	 1
- * #define ERR_NUMERIQUE 	 2
- * #define ERR_FICHIER 		 3
- * #define ERR_REALLOC		 4
- * #define ERR_NUMSOM		 5
- * #define ERR_DOUBLON		 6
- *
+ * définies dans CGraphe.h :
+ * ERR_FORMAT    	 21
+ * ERR_NUMERIQUE 	 22
+ * ERR_REALLOC		 23
+ * ERR_NUMSOM		 24
+ * ERR_DOUBLON		 25
+ * 
+ * définie dans CParser.h :
+ * ERR_FICHIER 		 11
+ * 
  */
 
 class CException 
