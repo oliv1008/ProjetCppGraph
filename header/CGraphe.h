@@ -32,6 +32,7 @@ class CGraphe
 		// Methodes
 		void GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo);
+		void GRInverserGraphe();
 		void GRPAfficherGraphe();
 };
 

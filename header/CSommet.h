@@ -34,6 +34,8 @@ class CSommet
 		
 		CArc ** SOMLireArcArrivant();
 		CArc ** SOMLireArcPartant();
+		void SOMModifierArcArrivant(CArc **);
+		void SOMModifierArcPartant(CArc **);
 		
 		unsigned int SOMLireCompteurArcArrivant();
 		unsigned int SOMLireCompteurArcPartant();

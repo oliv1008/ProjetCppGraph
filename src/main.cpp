@@ -8,6 +8,9 @@ void test()
 	try {
 		CGraphe pGRPGraphe("fichier.txt");
 		pGRPGraphe.GRPAfficherGraphe();
+		pGRPGraphe.GRInverserGraphe();
+		cout << "======================" << endl;
+		pGRPGraphe.GRPAfficherGraphe();
 		
 	} catch(CException EXCErreur){
 		switch(EXCErreur.EXCLireErreur()){

@@ -402,6 +402,31 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 }
 
 /***********************************************************************************
+**** Nom: GRInverserGraphe		                                                ****
+************************************************************************************
+**** Permet d'inverser un graphe							                    ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: Rien										                        ****
+**** Entraîne: l'inversion des arcs du graphe									****
+**** Sortie: Rien																****
+***********************************************************************************/
+void CGraphe::GRInverserGraphe(){
+	unsigned int uiBoucleSom = 0;
+	
+	for(uiBoucleSom = 0; uiBoucleSom < uiNombreSommet; uiBoucleSom++)
+	{
+		CArc ** pARCTemp;
+		// Temp = Arcs arrivants
+		pARCTemp = pSOMGRPTabSommet[uiBoucleSom]->SOMLireArcArrivant();
+		// Arcs arrivants = Arcs partants
+		pSOMGRPTabSommet[uiBoucleSom]->SOMModifierArcArrivant(pSOMGRPTabSommet[uiBoucleSom]->SOMLireArcPartant());
+		// Arcs partants = Temp
+		pSOMGRPTabSommet[uiBoucleSom]->SOMModifierArcPartant(pARCTemp);
+	}
+}
+
+/***********************************************************************************
 **** Nom: GRPAfficherGraphe		                                                ****
 ************************************************************************************
 **** Permet d'afficher un graphe							                    ****

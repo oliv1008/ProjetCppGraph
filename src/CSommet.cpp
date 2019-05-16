@@ -241,6 +241,16 @@ CArc ** CSommet::SOMLireArcPartant()
 {
 	return pARCSOMPartant;
 }
+
+void CSommet::SOMModifierArcArrivant(CArc ** pARCParam)
+{
+	pARCSOMArrivant = pARCParam;
+}
+
+void CSommet::SOMModifierArcPartant(CArc ** pARCParam)
+{
+	pARCSOMPartant = pARCParam;
+}
 /*******************************/ 
 
 /*********** METHODES **********/
