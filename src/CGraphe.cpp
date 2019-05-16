@@ -148,7 +148,7 @@ CGraphe::~CGraphe()
 	
 	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
-		delete pSOMGRPTabSommet[uiBoucle];
+		GRPEnleverSommet(pSOMGRPTabSommet[uiBoucle]->SOMLireNumero());
 	}
 	free(pSOMGRPTabSommet);
 }
@@ -168,25 +168,39 @@ CGraphe::~CGraphe()
 ***********************************************************************************/
 CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 {
-	unsigned int uiBoucle = 0;
-	bool bTrouve = false;
-	
-	/***** Gestion exception *****/
-	for (uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
+	if(!GRPContientSommet(uiNumero))
 	{
-		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
-		{
-			bTrouve = true;
-		}
-	}
-	if(!bTrouve)
-	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
 	/*****************************/
 	
 	return pSOMGRPTabSommet[uiNumero];
+}
+
+/***********************************************************************************
+**** Nom: GRPContientSommet		                                                ****
+************************************************************************************
+**** Permet de vérifier si un graphe contient un sommet ou non                  ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: -																****
+**** Sortie: bool																****
+***********************************************************************************/
+bool CGraphe::GRPContientSommet(unsigned int uiNumero)
+{
+	unsigned int uiBoucle = 0;
+	
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	{
+		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
+		{
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 /***********************************************************************************
@@ -201,6 +215,12 @@ CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 ***********************************************************************************/
 void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 {
+	if(GRPContientSommet(uiNumero))
+	{
+		CException ErrDoublon(ERR_DOUBLON);
+		throw ErrDoublon;
+	}
+	
 	CSommet **pSOMTemp;
 	
 	// Réallocation du tableau
@@ -237,20 +257,12 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
  	
 	CSommet ** pSOMTemp;
 	bool bSommetDel = true;
-	bool bTrouve = false;
 	
 	unsigned int uiBoucle = 0;
 	unsigned int uiBoucleSom = 0;
 	
 	/***** Gestion exception *****/
-	for (uiBoucle = 0; uiBoucle < uiNombreSommet && !bTrouve; uiBoucle++)
-	{
-		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
-		{
-			bTrouve = true;
-		}
-	}
-	if(!bTrouve)
+	if(!GRPContientSommet(uiNumero))
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;

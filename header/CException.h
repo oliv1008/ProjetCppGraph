@@ -10,7 +10,7 @@
  * #define ERR_REALLOC		 4
  * #define ERR_NUMSOM		 5
  * #define ERR_DOUBLON		 6
- * 
+ *
  */
 
 class CException 
