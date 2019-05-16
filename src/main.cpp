@@ -5,8 +5,15 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
+	if (argc != 2)
+	{
+		cout << "Nombre d'argument incorrect" << endl;
+		cout << "Utilisation : ./ProjetCppGraphe [Chemin vers un fichier valide]" << endl;
+		return -1;
+	}
+	
 	try {
-		CGraphe pGRPGraphe("fichier.txt");
+		CGraphe pGRPGraphe(argv[1]);
 		pGRPGraphe.GRPAfficherGraphe();
 		pGRPGraphe.GRInverserGraphe();
 		cout << "======================" << endl;
@@ -17,7 +24,8 @@ int main(int argc, char ** argv)
 			case ERR_NUMERIQUE : cerr << "Erreur numérique" << endl; break;
 			case ERR_FICHIER : cerr << "Erreur fichier" << endl; break;
 		}
-		exit(0);
+		
+		return -1;
 	}
 
 	return 0;
