@@ -25,6 +25,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	char pcResultat[256];
 	CParser PARParserGraphe(pcChemin);
 	
+	// Récupération du nombre de sommets
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "NBSommets"))
 	{
@@ -38,6 +39,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	}
 	uiNbSommets = atoi(pcResultat);
 	
+	// Récupération du nombre d'arcs
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "NBArcs"))
 	{
@@ -51,6 +53,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	}
 	uiNbArcs = atoi(pcResultat);
 	
+	// Récupération des sommets
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "Sommets"))
 	{
@@ -58,11 +61,11 @@ CGraphe::CGraphe(const char * pcChemin)
 		throw ErrFormat;
 	}
 	
-	//On remplit le tableau
+	// On remplit le tableau
 	puiTabSommets = (unsigned int *)malloc(uiNbSommets * sizeof(unsigned int));
 	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
-		//On récupère l'élement
+		// On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 		if (CParser::PARIsStringEqual(pcBalise, "]"))
 		{
@@ -85,14 +88,15 @@ CGraphe::CGraphe(const char * pcChemin)
 		throw ErrDimension;
 	}
 	
-	//On récupère la ligne "Arcs=["
+	// Récupération des arcs
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "Arcs"))
 	{
 		CException ErrFormat(ERR_FORMAT);
 		throw ErrFormat;
 	}
-	//On remplit le tableau
+	
+	// On remplit le tableau
 	puiTabArcs = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
 	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 	{
@@ -100,7 +104,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	}
 	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
-		//On récupère l'élement
+		// On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 		if (CParser::PARIsStringEqual(pcBalise, "]"))
 		{
@@ -138,6 +142,14 @@ CGraphe::CGraphe(const char * pcChemin)
 	{
 		GRPAjouterArc(puiTabArcs[uiBoucle][0], puiTabArcs[uiBoucle][1]);
 	}
+	
+	// Libération mémoire
+	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
+	{
+		free(puiTabArcs[uiBoucle]);
+	}
+	free(puiTabArcs);
+	free(puiTabSommets);
 }
 /********************************/
 
@@ -253,8 +265,6 @@ void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 ***********************************************************************************/
 void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 {
-	cout << "# Suppression du sommet " << uiNumero << "..." << endl;
- 	
 	CSommet ** pSOMTemp;
 	bool bSommetDel = true;
 	
@@ -278,10 +288,6 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 			// On supprime tous les arcs liés à ce sommet
 			unsigned int uiArcsPartants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcPartant();
 			unsigned int uiArcsArrivants = pSOMGRPTabSommet[uiBoucle]->SOMLireCompteurArcArrivant();
-			
-			cout << "[GRPEnleverSommet] Sommet : " << uiNumero << endl;
-			cout << "[GRPEnleverSommet] Arcs partants : " << uiArcsPartants << endl;
-			cout << "[GRPEnleverSommet] Arcs arrivants : " << uiArcsArrivants << endl;
 			
 			// Arcs partants
 			for(uiBoucleSom = 0; uiBoucleSom < uiArcsPartants; uiBoucleSom++)
