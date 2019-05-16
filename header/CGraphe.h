@@ -36,6 +36,7 @@ class CGraphe
 		bool GRPContientArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo);
+		void GRInverserGraphe();
 		void GRPAfficherGraphe();
 };
 

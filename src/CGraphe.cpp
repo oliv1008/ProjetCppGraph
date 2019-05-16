@@ -178,7 +178,17 @@ CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 	return pSOMGRPTabSommet[uiNumero];
 }
 
-int CGraphe::GRPContientSommet(unsigned int uiNumero)
+/***********************************************************************************
+**** Nom: GRPContientSommet		                                                ****
+************************************************************************************
+**** Permet de vérifier si un graphe contient un sommet ou non                  ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: uiNumero : unsigned int					                        ****
+**** Entraîne: -																****
+**** Sortie: bool																****
+***********************************************************************************/
+bool CGraphe::GRPContientSommet(unsigned int uiNumero)
 {
 	unsigned int uiBoucle = 0;
 	
@@ -205,7 +215,7 @@ int CGraphe::GRPContientSommet(unsigned int uiNumero)
 ***********************************************************************************/
 void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 {
-	if (GRPContientSommet(uiNumero))
+	if(GRPContientSommet(uiNumero))
 	{
 		//Erreur, sommet existe deja
 		CException ErrDoublon(ERR_DOUBLON);
@@ -389,6 +399,31 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 	pSOMGRPTabSommet[uiIndiceTo]->SOMEnleverArcArrivant(uiFrom);
 }
 /*******************************/ 
+
+/***********************************************************************************
+**** Nom: GRInverserGraphe		                                                ****
+************************************************************************************
+**** Permet d'inverser un graphe							                    ****
+************************************************************************************
+**** Précondition: -					        								****
+**** Entrée: Rien										                        ****
+**** Entraîne: l'inversion des arcs du graphe									****
+**** Sortie: Rien																****
+***********************************************************************************/
+void CGraphe::GRInverserGraphe(){
+	unsigned int uiBoucleSom = 0;
+	
+	for(uiBoucleSom = 0; uiBoucleSom < uiNombreSommet; uiBoucleSom++)
+	{
+		CArc ** pARCTemp;
+		// Temp = Arcs arrivants
+		pARCTemp = pSOMGRPTabSommet[uiBoucleSom]->SOMLireArcArrivant();
+		// Arcs arrivants = Arcs partants
+		pSOMGRPTabSommet[uiBoucleSom]->SOMModifierArcArrivant(pSOMGRPTabSommet[uiBoucleSom]->SOMLireArcPartant());
+		// Arcs partants = Temp
+		pSOMGRPTabSommet[uiBoucleSom]->SOMModifierArcPartant(pARCTemp);
+	}
+}
 
 /***********************************************************************************
 **** Nom: GRPAfficherGraphe		                                                ****
