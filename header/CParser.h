@@ -5,11 +5,7 @@
 #include <iostream>
 #include <header/CException.h>
 
-<<<<<<< HEAD
-#define ERR_ACCES_FICHIER 7
-=======
-#define ERR_FICHIER 3
->>>>>>> 44bc005fb5a9b50cb6d28d432f17666d13c78dc9
+#define ERR_FICHIER 11
 
 class CParser {
 

@@ -3,8 +3,7 @@
 
 #include "header/CArc.h"
 
-// Codes d'exceptions
-#define ERR_REALLOC		4
+#define ERR_REALLOC		23
 
 class CSommet
 {
@@ -40,6 +39,7 @@ class CSommet
 		
 		// Methodes
 		void SOMAfficherSommet();
+		int SOMContientArc(unsigned int uiTo);
 };
 
 #endif

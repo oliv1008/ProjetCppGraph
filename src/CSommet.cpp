@@ -273,3 +273,28 @@ void CSommet::SOMAfficherSommet()
 	}
 }
 /*******************************/ 
+
+/********************************************************************************
+**** Nom: SOMContientArc                                                     ****
+*********************************************************************************
+****                                                                         ****
+*********************************************************************************
+**** Précondition: Rien                                                      ****
+**** Entrée: unsigned int uiTo : destination de l'arc partant                ****
+**** Entraîne: Rien                                                          ****
+**** Sortie: Vrai si le sommet contient un arc partant vers uiTo, faux sinon ****
+********************************************************************************/
+int CSommet::SOMContientArc(unsigned int uiTo)
+{
+	unsigned int uiBoucle = 0;
+	
+	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
+	{
+		if (pARCSOMPartant[uiBoucle]->ARCLireDestination() == uiTo)
+		{
+			return uiBoucle;
+		}
+	}
+	
+	return 0;
+}

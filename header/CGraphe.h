@@ -5,11 +5,12 @@
 #include "header/CParser.h"
 
 // Codes d'exceptions
-#define ERR_FORMAT    	1
-#define ERR_NUMERIQUE 	2
-#define ERR_REALLOC		4
-#define ERR_NUMSOM		5
-#define ERR_DOUBLON		6
+#define ERR_FORMAT    	21
+#define ERR_NUMERIQUE 	22
+#define ERR_REALLOC		23
+#define ERR_NUMSOM		24
+#define ERR_DOUBLON		25
+#define ERR_NUMARC 		26
 
 class CGraphe
 {
@@ -29,7 +30,7 @@ class CGraphe
 		CSommet * GRPLireSommet(unsigned int uiNumero);
 		
 		// Methodes
-		bool GRPContientSommet(unsigned int uiNumero);
+		int GRPContientSommet(unsigned int uiNumero);
 		void GRPAjouterSommet(unsigned int uiNumero);
 		void GRPEnleverSommet(unsigned int uiNumero);
 		bool GRPContientArc(unsigned int uiFrom, unsigned int uiTo);

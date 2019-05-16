@@ -168,8 +168,6 @@ CGraphe::~CGraphe()
 ***********************************************************************************/
 CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 {
-	unsigned int uiBoucle = 0;
-
 	if(!GRPContientSommet(uiNumero))
 	{
 		CException ErrNumSom(ERR_NUMSOM);
@@ -180,7 +178,7 @@ CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 	return pSOMGRPTabSommet[uiNumero];
 }
 
-bool CGraphe::GRPContientSommet(unsigned int uiNumero)
+int CGraphe::GRPContientSommet(unsigned int uiNumero)
 {
 	unsigned int uiBoucle = 0;
 	
@@ -188,11 +186,11 @@ bool CGraphe::GRPContientSommet(unsigned int uiNumero)
 	{
 		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiNumero)
 		{
-			return true;
+			return uiBoucle;
 		}
 	}
 	
-	return false;
+	return 0;
 }
 
 /***********************************************************************************
@@ -209,6 +207,7 @@ void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 {
 	if (GRPContientSommet(uiNumero))
 	{
+		//Erreur, sommet existe deja
 		CException ErrDoublon(ERR_DOUBLON);
 		throw ErrDoublon;
 	}
@@ -329,29 +328,21 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 ***********************************************************************************/
 void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 {
-	bool bTrouveFrom = false, bTrouveTo = false;
 	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
-	unsigned int uiBoucle = 0;
 	
 	/***** Gestion exception *****/
-	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
-	{
-		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiFrom)
-		{
-			uiIndiceFrom = uiBoucle;
-			bTrouveFrom = true;
-		}
-		
-		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiTo)
-		{
-			uiIndiceTo = uiBoucle;
-			bTrouveTo = true;
-		}
-	}
-	if(!(bTrouveFrom && bTrouveTo))
+	uiIndiceFrom = GRPContientSommet(uiFrom);
+	uiIndiceTo = GRPContientSommet(uiTo);
+	if(!(uiIndiceFrom && uiIndiceTo))
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
+	}
+	if (pSOMGRPTabSommet[uiIndiceFrom]->SOMContientArc(uiTo))
+	{
+		//Erreur, arc existe deja
+		CException ErrDoublon(ERR_DOUBLON);
+		throw ErrDoublon;
 	}
 	/*****************************/
 	
@@ -359,6 +350,7 @@ void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMAjouterArcPartant(new CArc(uiTo));
 	pSOMGRPTabSommet[uiIndiceTo]->SOMAjouterArcArrivant(new CArc(uiFrom));
 }
+/*******************************/ 
 
 /***********************************************************************************
 **** Nom: GRPEnleverArc		                                                	****
@@ -374,29 +366,21 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 {
 	cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
 	
-	bool bTrouveFrom = false, bTrouveTo = false;
 	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
-	unsigned int uiBoucle = 0;
 	
 	/***** Gestion exception *****/
-	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
-	{
-		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiFrom)
-		{
-			uiIndiceFrom = uiBoucle;
-			bTrouveFrom = true;
-		}
-		
-		if (pSOMGRPTabSommet[uiBoucle]->SOMLireNumero() == uiTo)
-		{	
-			uiIndiceTo = uiBoucle;
-			bTrouveTo = true;
-		}
-	}
-	if(!(bTrouveFrom && bTrouveTo))
+	uiIndiceFrom = GRPContientSommet(uiFrom);
+	uiIndiceTo = GRPContientSommet(uiTo);
+	if(!(uiIndiceFrom && uiIndiceTo))
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
+	}
+	if (!pSOMGRPTabSommet[uiIndiceFrom]->SOMContientArc(uiTo))
+	{
+		//Erreur, arc n'existe pas
+		CException ErrNumArc(ERR_NUMARC);
+		throw ErrNumArc;
 	}
 	/*****************************/
 	
@@ -404,6 +388,7 @@ void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 	pSOMGRPTabSommet[uiIndiceFrom]->SOMEnleverArcPartant(uiTo);
 	pSOMGRPTabSommet[uiIndiceTo]->SOMEnleverArcArrivant(uiFrom);
 }
+/*******************************/ 
 
 /***********************************************************************************
 **** Nom: GRPAfficherGraphe		                                                ****
