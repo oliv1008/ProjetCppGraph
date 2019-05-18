@@ -149,9 +149,14 @@ bool CParser::PARIsStringANumericalValue(const char * pcStr)
 	bool bIsNumericalValue = true;
 	unsigned int uiBoucleStr = 0;
 	
+	if ((pcStr[0] < '0' || pcStr[0] > '9') && pcStr[uiBoucleStr] != '-')
+	{
+		return false;
+	}
+	
 	for (uiBoucleStr = 0; pcStr[uiBoucleStr] != '\0' && bIsNumericalValue; uiBoucleStr++)
 	{
-		if ((pcStr[uiBoucleStr] < '0' || pcStr[uiBoucleStr] > '9') && pcStr[uiBoucleStr] != '.' && pcStr[uiBoucleStr] != '-')
+		if ((pcStr[uiBoucleStr] < '0' || pcStr[uiBoucleStr] > '9') && pcStr[uiBoucleStr] != ',' && pcStr[uiBoucleStr] != '.' && pcStr[uiBoucleStr] != '-')
 		{
 			bIsNumericalValue = false;
 		}

@@ -71,13 +71,13 @@ CGraphe::CGraphe(const char * pcChemin)
 		throw ErrFormat;
 	}
 	
-	// On remplit le tableau
+	// On remplit le tableau de sommets
 	puiTabSommets = (unsigned int *)malloc(uiNbSommets * sizeof(unsigned int));
 	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
 	{
 		// On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-		if (CParser::PARIsStringEqual(pcBalise, "]"))
+		if (CParser::PARIsStringEqual(pcBalise, "]") || !CParser::PARIsStringEqual(pcBalise, "Numero"))
 		{
 			CException ErrDimension(ERR_FORMAT);
 			throw ErrDimension;
@@ -87,10 +87,15 @@ CGraphe::CGraphe(const char * pcChemin)
 			CException ErrNumerique(ERR_NUMERIQUE);
 			throw ErrNumerique;
 		}
+		else if (atoi(pcResultat) <= 0)
+		{
+			CException ErrFormat(ERR_NUMERIQUE);
+			throw ErrFormat;
+		}
 					
 		puiTabSommets[uiBoucle] = atoi(pcResultat);
 	}
-				
+	// On vérifie que les sommets s'arretent bien
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "]"))
 	{
@@ -100,13 +105,13 @@ CGraphe::CGraphe(const char * pcChemin)
 	
 	// Récupération des arcs
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-	if (!CParser::PARIsStringEqual(pcBalise, "Arcs"))
+	if (!CParser::PARIsStringEqual(pcBalise, "Arcs") || !CParser::PARIsStringEqual(pcResultat, "["))
 	{
 		CException ErrFormat(ERR_FORMAT);
 		throw ErrFormat;
 	}
 	
-	// On remplit le tableau
+	// On remplit le tableau d'arcs
 	puiTabArcs = (unsigned int **)malloc(uiNbArcs * sizeof(unsigned int *));
 	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 	{
@@ -116,22 +121,32 @@ CGraphe::CGraphe(const char * pcChemin)
 	{
 		// On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-		if (CParser::PARIsStringEqual(pcBalise, "]"))
+		if (CParser::PARIsStringEqual(pcBalise, "]") || !CParser::PARIsStringEqual(pcBalise, "Debut"))
 		{
 			CException ErrDimension(ERR_FORMAT);
 			throw ErrDimension;
+		}
+		else if (atoi(pcResultat) <= 0)
+		{
+			CException ErrFormat(ERR_NUMERIQUE);
+			throw ErrFormat;
 		}
 		puiTabArcs[uiBoucle][0] = atoi(pcResultat);
 			
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-		if (CParser::PARIsStringEqual(pcBalise, "]"))
+		if (CParser::PARIsStringEqual(pcBalise, "]") || !CParser::PARIsStringEqual(pcBalise, "Fin"))
 		{
 			CException ErrDimension(ERR_FORMAT);
 			throw ErrDimension;
 		}
+		else if (atoi(pcResultat) <= 0)
+		{
+			CException ErrFormat(ERR_NUMERIQUE);
+			throw ErrFormat;
+		}
 		puiTabArcs[uiBoucle][1] = atoi(pcResultat);
 	}
-	
+	// On vérifie que les arcs ne s'arretent pas
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
 	if (!CParser::PARIsStringEqual(pcBalise, "]"))
 	{
@@ -154,6 +169,8 @@ CGraphe::CGraphe(const char * pcChemin)
 			case ERR_DOUBLON : cerr << "Erreur doublon : sommet deja existant" << endl; break;
 			default : cerr << "Erreur inconnue (creation des sommets)" << endl; break;
 		}
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
 	}
 	
 	try 
@@ -172,6 +189,9 @@ CGraphe::CGraphe(const char * pcChemin)
 			case ERR_DOUBLON : cerr << "Erreur doublon : arc déjà existant" << endl; break;
 			default : cerr << "Erreur inconnue (creation des arcs)" << endl; break;
 		}
+		CException ErrFormat(ERR_FORMAT);
+		throw ErrFormat;
+		
 	}
 	
 	// Libération mémoire
