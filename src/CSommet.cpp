@@ -11,8 +11,8 @@ CSommet::CSommet()
 	uiSOMNumero = 0;
 	pARCSOMArrivant = nullptr;
 	pARCSOMPartant = nullptr;
-	uiCompteurArcArrivant = 0;
-	uiCompteurArcPartant = 0;
+	uiSOMCompteurArcArrivant = 0;
+	uiSOMCompteurArcPartant = 0;
 }
 
 /** Constructeur de confort **/
@@ -21,8 +21,8 @@ CSommet::CSommet(unsigned int uiNumero)
 	uiSOMNumero = uiNumero;
 	pARCSOMArrivant = nullptr;
 	pARCSOMPartant = nullptr;
-	uiCompteurArcArrivant = 0;
-	uiCompteurArcPartant = 0;
+	uiSOMCompteurArcArrivant = 0;
+	uiSOMCompteurArcPartant = 0;
 }
 /********************************/
 
@@ -32,14 +32,14 @@ CSommet::~CSommet()
 	unsigned int uiBoucle = 0;
 	
 	// Suppression des arcs arrivants
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcArrivant; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcArrivant; uiBoucle++)
 	{
 		delete pARCSOMArrivant[uiBoucle];
 	}
 	free(pARCSOMArrivant);
 	
 	// Suppression des arcs partants
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcPartant; uiBoucle++)
 	{
 		delete pARCSOMPartant[uiBoucle];
 	}
@@ -74,13 +74,13 @@ void CSommet::SOMAjouterArcArrivant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
 	
-	pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiCompteurArcArrivant + 1));
+	pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiSOMCompteurArcArrivant + 1));
 	
 	if (pARCTemp != nullptr)
 	{
 		pARCSOMArrivant = pARCTemp;
-		pARCSOMArrivant[uiCompteurArcArrivant] = pARCArc;
-		uiCompteurArcArrivant++;
+		pARCSOMArrivant[uiSOMCompteurArcArrivant] = pARCArc;
+		uiSOMCompteurArcArrivant++;
 	}
 	/***** Gestion exception *****/
 	else
@@ -109,25 +109,25 @@ void CSommet::SOMEnleverArcArrivant(unsigned int uiDestination)
 	unsigned int uiBoucleDel = 0;
 	
 	// On parcourt la liste des arcs arrivants
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcArrivant && bArcDel; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcArrivant && bArcDel; uiBoucle++)
 	{
 		// Quand on trouve celui associé à uiDestination...
 		if (pARCSOMArrivant[uiBoucle]->ARCLireDestination() == uiDestination)
 		{
 			// On supprime l'arc et on réarrange le tableau
 			delete pARCSOMArrivant[uiBoucle];
-			for (uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcArrivant - 1; uiBoucleDel++)
+			for (uiBoucleDel = uiBoucle; uiBoucleDel < uiSOMCompteurArcArrivant - 1; uiBoucleDel++)
 			{
 				pARCSOMArrivant[uiBoucleDel] = pARCSOMArrivant[uiBoucleDel + 1];
 			}
 			
 			// On réalloue le tableau
-			pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiCompteurArcArrivant - 1));
+			pARCTemp = (CArc**)realloc(pARCSOMArrivant, sizeof(CArc*) * (uiSOMCompteurArcArrivant - 1));
 			
-			if (pARCTemp != nullptr || uiCompteurArcArrivant == 1)
+			if (pARCTemp != nullptr || uiSOMCompteurArcArrivant == 1)
 			{
 				pARCSOMArrivant = pARCTemp;
-				uiCompteurArcArrivant--;
+				uiSOMCompteurArcArrivant--;
 				bArcDel = false;
 			}
 			/***** Gestion exception *****/
@@ -155,13 +155,13 @@ void CSommet::SOMAjouterArcPartant(CArc *pARCArc)
 {
 	CArc ** pARCTemp;
 	
-	pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiCompteurArcPartant + 1) * sizeof(CArc *));
+	pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiSOMCompteurArcPartant + 1) * sizeof(CArc *));
 	
 	if (pARCTemp != nullptr)
 	{
 		pARCSOMPartant = pARCTemp;
-		pARCSOMPartant[uiCompteurArcPartant] = pARCArc;
-		uiCompteurArcPartant++;
+		pARCSOMPartant[uiSOMCompteurArcPartant] = pARCArc;
+		uiSOMCompteurArcPartant++;
 	}
 	/***** Gestion exception *****/
 	else
@@ -190,25 +190,25 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 	unsigned int uiBoucleDel = 0;
 	
 	// On parcourt la liste des arcs partants
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant && bArcDel; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcPartant && bArcDel; uiBoucle++)
 	{
 		// Quand on trouve celui associé à uiDestination...
 		if (pARCSOMPartant[uiBoucle]->ARCLireDestination() == uiDestination)
 		{
 			// On supprime l'arc et on réarrange le tableau
 			delete pARCSOMPartant[uiBoucle];
-			for (uiBoucleDel = uiBoucle; uiBoucleDel < uiCompteurArcPartant - 1; uiBoucleDel++)
+			for (uiBoucleDel = uiBoucle; uiBoucleDel < uiSOMCompteurArcPartant - 1; uiBoucleDel++)
 			{
 				pARCSOMPartant[uiBoucleDel] = pARCSOMPartant[uiBoucleDel + 1];
 			}
 			
 			// On réalloue le tableau
-			pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiCompteurArcPartant - 1) * sizeof(CArc *));
+			pARCTemp = (CArc**)realloc(pARCSOMPartant, (uiSOMCompteurArcPartant - 1) * sizeof(CArc *));
 			
-			if (pARCTemp != nullptr || uiCompteurArcPartant == 1)
+			if (pARCTemp != nullptr || uiSOMCompteurArcPartant == 1)
 			{
 				pARCSOMPartant = pARCTemp;
-				uiCompteurArcPartant--;
+				uiSOMCompteurArcPartant--;
 				bArcDel = false;
 			}
 			/***** Gestion exception *****/
@@ -224,12 +224,12 @@ void CSommet::SOMEnleverArcPartant(unsigned int uiDestination)
 
 unsigned int CSommet::SOMLireCompteurArcArrivant()
 {
-	return uiCompteurArcArrivant;
+	return uiSOMCompteurArcArrivant;
 }
 
 unsigned int CSommet::SOMLireCompteurArcPartant()
 {
-	return uiCompteurArcPartant;
+	return uiSOMCompteurArcPartant;
 }
 
 CArc ** CSommet::SOMLireArcArrivant()
@@ -272,12 +272,12 @@ void CSommet::SOMAfficherSommet()
 	
 	cout << "S" << uiSOMNumero << endl;
 	cout << "Arc arrivant :" << endl;
-	for (uiBoucleA = 0; uiBoucleA < uiCompteurArcArrivant; uiBoucleA++)
+	for (uiBoucleA = 0; uiBoucleA < uiSOMCompteurArcArrivant; uiBoucleA++)
 	{
 		cout << "\tArc arrivant de " << pARCSOMArrivant[uiBoucleA]->ARCLireDestination() << endl;
 	}
 	cout << "Arc partant :" << endl;
-	for (uiBoucleP = 0; uiBoucleP < uiCompteurArcPartant; uiBoucleP++)
+	for (uiBoucleP = 0; uiBoucleP < uiSOMCompteurArcPartant; uiBoucleP++)
 	{
 		cout << "\tArc partant vers " << pARCSOMPartant[uiBoucleP]->ARCLireDestination() << endl;
 	}
@@ -298,7 +298,7 @@ int CSommet::SOMContientArc(unsigned int uiTo)
 {
 	unsigned int uiBoucle = 0;
 	
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcPartant; uiBoucle++)
 	{
 		if (pARCSOMPartant[uiBoucle]->ARCLireDestination() == uiTo)
 		{

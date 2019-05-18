@@ -13,8 +13,8 @@ class CSommet
 		unsigned int uiSOMNumero;
 		CArc ** pARCSOMArrivant;
 		CArc ** pARCSOMPartant;
-		unsigned int uiCompteurArcArrivant;
-		unsigned int uiCompteurArcPartant;
+		unsigned int uiSOMCompteurArcArrivant;
+		unsigned int uiSOMCompteurArcPartant;
 		
 	public:
 	
@@ -34,8 +34,8 @@ class CSommet
 		
 		CArc ** SOMLireArcArrivant();
 		CArc ** SOMLireArcPartant();
-		void SOMModifierArcArrivant(CArc **);
-		void SOMModifierArcPartant(CArc **);
+		void SOMModifierArcArrivant(CArc ** pARCArrivant);
+		void SOMModifierArcPartant(CArc **pARCPartant);
 		
 		unsigned int SOMLireCompteurArcArrivant();
 		unsigned int SOMLireCompteurArcPartant();

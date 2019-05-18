@@ -9,6 +9,7 @@
  * ERR_REALLOC		 23
  * ERR_NUMSOM		 24
  * ERR_DOUBLON		 25
+ * ERR_NUMARC		 26
  * 
  * définie dans CParser.h :
  * ERR_FICHIER 		 11
