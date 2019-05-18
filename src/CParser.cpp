@@ -44,7 +44,7 @@ void CParser::PARLireLigne(char * pcBalise, char * pcResultat)
 	if (fichier.is_open())
 	{
 		fichier >> pcBalise;
-		cout << pcBalise << endl;
+		//### cout << pcBalise << endl;
 		PARSeparateString('=', pcBalise, pcResultat);
 	}
 	else

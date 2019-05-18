@@ -16,15 +16,15 @@ int main(int argc, char ** argv)
 		CGraphe pGRPGraphe(argv[1]);
 		pGRPGraphe.GRPAfficherGraphe();
 		pGRPGraphe.GRInverserGraphe();
-		cout << "======================" << endl;
+		cout << "\n===== Inversion du graphe =====\n" << endl;
 		pGRPGraphe.GRPAfficherGraphe();
 	} catch(CException EXCErreur){
 		switch(EXCErreur.EXCLireErreur()){
 			case ERR_FORMAT : cerr << "Erreur format" << endl; break;
 			case ERR_NUMERIQUE : cerr << "Erreur numérique" << endl; break;
 			case ERR_FICHIER : cerr << "Erreur fichier" << endl; break;
+			default : cerr << "Erreur inconnue" << endl; break;
 		}
-		
 		return -1;
 	}
 

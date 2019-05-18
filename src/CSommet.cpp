@@ -306,5 +306,5 @@ int CSommet::SOMContientArc(unsigned int uiTo)
 		}
 	}
 	
-	return 0;
+	return -1;
 }
