@@ -24,12 +24,15 @@ class CGraphe
 		// Constructeurs & Destructeur
 		CGraphe();
 		CGraphe(const char * pcChemin);
+		CGraphe(CGraphe &GRPGraphe);
 		~CGraphe();
 		
 		// Accesseurs
-		CSommet * GRPLireSommet(unsigned int uiNumero);
+		CSommet * GRPLireSommetNumero(unsigned int uiNumero);
+		CSommet * GRPLireSommetIndice(unsigned int uiIndice);
 		
 		// Methodes
+		unsigned int GRPLireNombreSommet();
 		int GRPContientSommet(unsigned int uiNumero);
 		void GRPAjouterSommet(unsigned int uiNumero);
 		void GRPEnleverSommet(unsigned int uiNumero);
@@ -38,6 +41,7 @@ class CGraphe
 		void GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRInverserGraphe();
 		void GRPAfficherGraphe();
+		CGraphe& operator=(CGraphe &GRPGraphe);
 };
 
 #endif

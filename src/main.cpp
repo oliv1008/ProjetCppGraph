@@ -13,11 +13,13 @@ int main(int argc, char ** argv)
 	}
 	
 	try {
-		CGraphe pGRPGraphe(argv[1]);
-		pGRPGraphe.GRPAfficherGraphe();
-		pGRPGraphe.GRInverserGraphe();
-		cout << "\n===== Inversion du graphe =====\n" << endl;
-		pGRPGraphe.GRPAfficherGraphe();
+		CGraphe GRPGraphe(argv[1]);
+		GRPGraphe.GRPAfficherGraphe();
+		CGraphe GRPGrapheCopie;
+		GRPGrapheCopie = GRPGraphe;
+		GRPGrapheCopie.GRInverserGraphe();
+		cout << "======================" << endl;
+		GRPGrapheCopie.GRPAfficherGraphe();
 	} catch(CException EXCErreur){
 		switch(EXCErreur.EXCLireErreur()){
 			case ERR_FORMAT : cerr << "Erreur format" << endl; break;

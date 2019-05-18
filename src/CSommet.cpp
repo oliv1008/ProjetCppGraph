@@ -26,6 +26,28 @@ CSommet::CSommet(unsigned int uiNumero)
 }
 /********************************/
 
+/** Constructeur de recopie **/
+CSommet::CSommet(CSommet &SOMSommet)
+{
+	unsigned int uiBoucle = 0;
+	uiSOMNumero = SOMSommet.SOMLireNumero();
+	uiSOMCompteurArcArrivant = SOMSommet.SOMLireCompteurArcArrivant();
+	uiSOMCompteurArcPartant = SOMSommet.SOMLireCompteurArcPartant();
+	
+	pARCSOMArrivant = (CArc**)malloc(sizeof(CArc*) * uiSOMCompteurArcArrivant);
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcArrivant; uiBoucle++)
+	{
+		pARCSOMArrivant[uiBoucle] = new CArc(*(SOMSommet.SOMLireArcArrivantIndice(uiBoucle)));
+	}
+	
+	pARCSOMPartant = (CArc**)malloc(sizeof(CArc*) * uiSOMCompteurArcPartant);
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcPartant; uiBoucle++)
+	{
+		pARCSOMPartant[uiBoucle] = new CArc(*(SOMSommet.SOMLireArcPartantIndice(uiBoucle)));
+	}
+}
+/********************************/
+
 /********** DESTRUCTEUR *********/ 
 CSommet::~CSommet()
 {
@@ -237,9 +259,37 @@ CArc ** CSommet::SOMLireArcArrivant()
 	return pARCSOMArrivant;
 }
 
+CArc * CSommet::SOMLireArcArrivantIndice(unsigned int uiIndice)
+{
+	if (uiIndice < uiSOMCompteurArcArrivant)
+	{
+		return pARCSOMArrivant[uiIndice];
+	}
+	else
+	{
+		//Erreur, l'arc n'existe pas
+		CException ErrNumSom(ERR_NUMARC);
+		throw ErrNumSom;
+	}
+}
+
 CArc ** CSommet::SOMLireArcPartant()
 {
 	return pARCSOMPartant;
+}
+
+CArc * CSommet::SOMLireArcPartantIndice(unsigned int uiIndice)
+{
+	if (uiIndice < uiSOMCompteurArcPartant)
+	{
+		return pARCSOMPartant[uiIndice];
+	}
+	else
+	{
+		//Erreur, l'arc n'existe pas
+		CException ErrNumSom(ERR_NUMARC);
+		throw ErrNumSom;
+	}
 }
 
 void CSommet::SOMModifierArcArrivant(CArc ** pARCParam)
