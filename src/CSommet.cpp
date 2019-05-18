@@ -31,17 +31,17 @@ CSommet::CSommet(CSommet &SOMSommet)
 {
 	unsigned int uiBoucle = 0;
 	uiSOMNumero = SOMSommet.SOMLireNumero();
-	uiCompteurArcArrivant = SOMSommet.SOMLireCompteurArcArrivant();
-	uiCompteurArcPartant = SOMSommet.SOMLireCompteurArcPartant();
+	uiSOMCompteurArcArrivant = SOMSommet.SOMLireCompteurArcArrivant();
+	uiSOMCompteurArcPartant = SOMSommet.SOMLireCompteurArcPartant();
 	
-	pARCSOMArrivant = (CArc**)malloc(sizeof(CArc*) * uiCompteurArcArrivant);
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcArrivant; uiBoucle++)
+	pARCSOMArrivant = (CArc**)malloc(sizeof(CArc*) * uiSOMCompteurArcArrivant);
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcArrivant; uiBoucle++)
 	{
 		pARCSOMArrivant[uiBoucle] = new CArc(*(SOMSommet.SOMLireArcArrivantIndice(uiBoucle)));
 	}
 	
-	pARCSOMPartant = (CArc**)malloc(sizeof(CArc*) * uiCompteurArcPartant);
-	for (uiBoucle = 0; uiBoucle < uiCompteurArcPartant; uiBoucle++)
+	pARCSOMPartant = (CArc**)malloc(sizeof(CArc*) * uiSOMCompteurArcPartant);
+	for (uiBoucle = 0; uiBoucle < uiSOMCompteurArcPartant; uiBoucle++)
 	{
 		pARCSOMPartant[uiBoucle] = new CArc(*(SOMSommet.SOMLireArcPartantIndice(uiBoucle)));
 	}
@@ -261,7 +261,7 @@ CArc ** CSommet::SOMLireArcArrivant()
 
 CArc * CSommet::SOMLireArcArrivantIndice(unsigned int uiIndice)
 {
-	if (uiIndice < uiCompteurArcArrivant)
+	if (uiIndice < uiSOMCompteurArcArrivant)
 	{
 		return pARCSOMArrivant[uiIndice];
 	}
@@ -280,7 +280,7 @@ CArc ** CSommet::SOMLireArcPartant()
 
 CArc * CSommet::SOMLireArcPartantIndice(unsigned int uiIndice)
 {
-	if (uiIndice < uiCompteurArcPartant)
+	if (uiIndice < uiSOMCompteurArcPartant)
 	{
 		return pARCSOMPartant[uiIndice];
 	}

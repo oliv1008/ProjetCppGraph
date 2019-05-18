@@ -15,12 +15,11 @@ int main(int argc, char ** argv)
 	try {
 		CGraphe GRPGraphe(argv[1]);
 		GRPGraphe.GRPAfficherGraphe();
-		cout << "****Copie de GRPGraphe****" << endl;
-		CGraphe GRPGrapheCopie(GRPGraphe);
-		GRPGrapheCopie.GRPAfficherGraphe();
-		/*GRPGraphe.GRInverserGraphe();
+		CGraphe GRPGrapheCopie;
+		GRPGrapheCopie = GRPGraphe;
+		GRPGrapheCopie.GRInverserGraphe();
 		cout << "======================" << endl;
-		GRPGraphe.GRPAfficherGraphe();*/
+		GRPGrapheCopie.GRPAfficherGraphe();
 	} catch(CException EXCErreur){
 		switch(EXCErreur.EXCLireErreur()){
 			case ERR_FORMAT : cerr << "Erreur format" << endl; break;

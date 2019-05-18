@@ -542,3 +542,18 @@ void CGraphe::GRPAfficherGraphe()
 	}
 }
 /*******************************/ 
+
+CGraphe& CGraphe::operator=(CGraphe &GRPGraphe)
+{
+	unsigned int uiBoucle = 0;
+	
+	uiNombreSommet = GRPGraphe.GRPLireNombreSommet();
+	pSOMGRPTabSommet = (CSommet**)realloc(pSOMGRPTabSommet, sizeof(CSommet*) * uiNombreSommet);
+	
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	{
+		pSOMGRPTabSommet[uiBoucle] = new CSommet(*(GRPGraphe.GRPLireSommetIndice(uiBoucle)));
+	}
+	
+	return *this;
+}

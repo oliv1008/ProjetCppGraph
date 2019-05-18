@@ -41,6 +41,7 @@ class CGraphe
 		void GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo);
 		void GRInverserGraphe();
 		void GRPAfficherGraphe();
+		CGraphe& operator=(CGraphe &GRPGraphe);
 };
 
 #endif
