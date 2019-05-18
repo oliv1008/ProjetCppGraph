@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <iostream>
-#include <header/CException.h>
+#include "header/CException.h"
 
 #define ERR_FICHIER 11
 
@@ -11,12 +11,11 @@ class CParser {
 
 	private :
 
-	std::ifstream fichier;
+		std::ifstream fichier;
 
 	public :
 
 		// Constructeurs & Destructeur
-		CParser();
 		CParser(const char * pcChemin);
 		~CParser();
 		
