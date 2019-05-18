@@ -28,7 +28,6 @@ int main(int argc, char ** argv)
 			case ERR_FICHIER : cerr << "Erreur fichier" << endl; break;
 			default : cerr << "Erreur inconnue" << endl; break;
 		}
-		
 		return -1;
 	}
 

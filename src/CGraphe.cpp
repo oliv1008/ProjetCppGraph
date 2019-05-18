@@ -144,13 +144,34 @@ CGraphe::CGraphe(const char * pcChemin)
 	pSOMGRPTabSommet = nullptr;
 	uiNombreSommet = 0;
 	
-	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
-	{
-		GRPAjouterSommet(puiTabSommets[uiBoucle]);
+	try {
+		for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+		{
+			GRPAjouterSommet(puiTabSommets[uiBoucle]);
+		}
+	} catch(CException EXCErreur){
+		switch(EXCErreur.EXCLireErreur()){
+			case ERR_DOUBLON : cerr << "Erreur doublon : sommet deja existant" << endl; break;
+			default : cerr << "Erreur inconnue (creation des sommets)" << endl; break;
+		}
 	}
-	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
+	
+	try 
 	{
-		GRPAjouterArc(puiTabArcs[uiBoucle][0], puiTabArcs[uiBoucle][1]);
+		for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
+		{
+			//### cout << "Ajout de l'arc " << puiTabArcs[uiBoucle][0] << "->" << puiTabArcs[uiBoucle][1] << endl;
+			GRPAjouterArc(puiTabArcs[uiBoucle][0], puiTabArcs[uiBoucle][1]);
+		}
+	} 
+	catch(CException EXCErreur)
+	{
+		switch(EXCErreur.EXCLireErreur())
+		{
+			case ERR_NUMSOM : cerr << "Erreur numero arc : sommets introuvables" << endl; break;
+			case ERR_DOUBLON : cerr << "Erreur doublon : arc déjà existant" << endl; break;
+			default : cerr << "Erreur inconnue (creation des arcs)" << endl; break;
+		}
 	}
 	
 	// Libération mémoire
@@ -160,6 +181,8 @@ CGraphe::CGraphe(const char * pcChemin)
 	}
 	free(puiTabArcs);
 	free(puiTabSommets);
+	
+	
 }
 /********************************/
 
@@ -183,7 +206,20 @@ CGraphe::~CGraphe()
 	
 	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
 	{
-		GRPEnleverSommet(pSOMGRPTabSommet[uiBoucle]->SOMLireNumero());
+		try 
+		{
+			GRPEnleverSommet(pSOMGRPTabSommet[uiBoucle]->SOMLireNumero());
+		}
+		catch(CException EXCErreur)
+		{
+			switch(EXCErreur.EXCLireErreur())
+			{
+				case ERR_NUMSOM : cerr << "Erreur numero sommet : sommets introuvables" << endl; break;
+				case ERR_NUMARC : cerr << "Erreur arc : cet arc n'existe pas" << endl; break;
+				case ERR_REALLOC : cerr << "Erreur realloc" << endl; break;
+				default : cerr << "Erreur inconnue (creation des arcs)" << endl; break;
+			}
+		}	
 	}
 	free(pSOMGRPTabSommet);
 }
@@ -267,7 +303,7 @@ int CGraphe::GRPContientSommet(unsigned int uiNumero)
 		}
 	}
 	
-	return 0;
+	return -1;
 }
 
 /***********************************************************************************
@@ -282,7 +318,7 @@ int CGraphe::GRPContientSommet(unsigned int uiNumero)
 ***********************************************************************************/
 void CGraphe::GRPAjouterSommet(unsigned int uiNumero)
 {
-	if(GRPContientSommet(uiNumero))
+	if(GRPContientSommet(uiNumero) != -1)
 	{
 		//Erreur, sommet existe deja
 		CException ErrDoublon(ERR_DOUBLON);
@@ -328,7 +364,7 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 	unsigned int uiBoucleSom = 0;
 	
 	/***** Gestion exception *****/
-	if(!GRPContientSommet(uiNumero))
+	if(GRPContientSommet(uiNumero) == -1)
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
@@ -399,17 +435,17 @@ void CGraphe::GRPEnleverSommet(unsigned int uiNumero)
 ***********************************************************************************/
 void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 {
-	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
+	int uiIndiceFrom = 0, uiIndiceTo = 0;
 	
 	/***** Gestion exception *****/
 	uiIndiceFrom = GRPContientSommet(uiFrom);
 	uiIndiceTo = GRPContientSommet(uiTo);
-	if(!(uiIndiceFrom && uiIndiceTo))
+	if(uiIndiceFrom == -1 || uiIndiceTo == -1)
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
-	if (pSOMGRPTabSommet[uiIndiceFrom]->SOMContientArc(uiTo))
+	if (pSOMGRPTabSommet[uiIndiceFrom]->SOMContientArc(uiTo) != -1)
 	{
 		//Erreur, arc existe deja
 		CException ErrDoublon(ERR_DOUBLON);
@@ -435,19 +471,19 @@ void CGraphe::GRPAjouterArc(unsigned int uiFrom, unsigned int uiTo)
 ***********************************************************************************/
 void CGraphe::GRPEnleverArc(unsigned int uiFrom, unsigned int uiTo)
 {
-	cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
+	//### cout << "[GRPEnleverArc] Suppression de l'arc (from " << uiFrom << " to " << uiTo << ")" << endl;
 	
-	unsigned int uiIndiceFrom = 0, uiIndiceTo = 0;
+	int uiIndiceFrom = 0, uiIndiceTo = 0;
 	
 	/***** Gestion exception *****/
 	uiIndiceFrom = GRPContientSommet(uiFrom);
 	uiIndiceTo = GRPContientSommet(uiTo);
-	if(!(uiIndiceFrom && uiIndiceTo))
+	if(uiIndiceFrom == -1 || uiIndiceTo == -1)
 	{	// Erreur sommet non trouvé
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
-	if (!pSOMGRPTabSommet[uiIndiceFrom]->SOMContientArc(uiTo))
+	if (pSOMGRPTabSommet[uiIndiceFrom]->SOMContientArc(uiTo) == -1)
 	{
 		//Erreur, arc n'existe pas
 		CException ErrNumArc(ERR_NUMARC);

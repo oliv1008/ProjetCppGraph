@@ -14,8 +14,8 @@ class CSommet
 		unsigned int uiSOMNumero;
 		CArc ** pARCSOMArrivant;
 		CArc ** pARCSOMPartant;
-		unsigned int uiCompteurArcArrivant;
-		unsigned int uiCompteurArcPartant;
+		unsigned int uiSOMCompteurArcArrivant;
+		unsigned int uiSOMCompteurArcPartant;
 		
 	public:
 	
