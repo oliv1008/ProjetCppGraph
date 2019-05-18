@@ -13,16 +13,20 @@ int main(int argc, char ** argv)
 	}
 	
 	try {
-		CGraphe pGRPGraphe(argv[1]);
-		pGRPGraphe.GRPAfficherGraphe();
-		pGRPGraphe.GRInverserGraphe();
+		CGraphe GRPGraphe(argv[1]);
+		GRPGraphe.GRPAfficherGraphe();
+		cout << "****Copie de GRPGraphe****" << endl;
+		CGraphe GRPGrapheCopie(GRPGraphe);
+		GRPGrapheCopie.GRPAfficherGraphe();
+		/*GRPGraphe.GRInverserGraphe();
 		cout << "======================" << endl;
-		pGRPGraphe.GRPAfficherGraphe();
+		GRPGraphe.GRPAfficherGraphe();*/
 	} catch(CException EXCErreur){
 		switch(EXCErreur.EXCLireErreur()){
 			case ERR_FORMAT : cerr << "Erreur format" << endl; break;
 			case ERR_NUMERIQUE : cerr << "Erreur numérique" << endl; break;
 			case ERR_FICHIER : cerr << "Erreur fichier" << endl; break;
+			default : cerr << "Erreur inconnue" << endl; break;
 		}
 		
 		return -1;

@@ -21,6 +21,7 @@ class CArc
 		// Constructeurs & Destructeur
 		CArc();
 		CArc(unsigned int uiDestination);
+		CArc(CArc &ARCArc);
 		
 		// Accesseurs
 		unsigned int ARCLireDestination();

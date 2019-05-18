@@ -5,6 +5,7 @@
 
 // Codes d'exceptions
 #define ERR_REALLOC		23
+#define ERR_NUMARC		26
 
 class CSommet
 {
@@ -21,6 +22,7 @@ class CSommet
 		// Constructeurs & Destructeur
 		CSommet();
 		CSommet(unsigned int uiNumero);
+		CSommet(CSommet &SOMSommet);
 		~CSommet();
 		
 		// Accesseurs
@@ -33,7 +35,9 @@ class CSommet
 		void SOMEnleverArcPartant(unsigned int uiDestination);
 		
 		CArc ** SOMLireArcArrivant();
+		CArc * SOMLireArcArrivantIndice(unsigned int uiIndice);
 		CArc ** SOMLireArcPartant();
+		CArc * SOMLireArcPartantIndice(unsigned int uiIndice);
 		void SOMModifierArcArrivant(CArc **);
 		void SOMModifierArcPartant(CArc **);
 		

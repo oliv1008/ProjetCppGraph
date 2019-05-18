@@ -37,6 +37,11 @@ CGraphe::CGraphe(const char * pcChemin)
 		CException ErrFormat(ERR_NUMERIQUE);
 		throw ErrFormat;
 	}
+	else if (atoi(pcResultat) <= 0)
+	{
+		CException ErrFormat(ERR_NUMERIQUE);
+		throw ErrFormat;
+	}
 	uiNbSommets = atoi(pcResultat);
 	
 	// Récupération du nombre d'arcs
@@ -51,11 +56,16 @@ CGraphe::CGraphe(const char * pcChemin)
 		CException ErrNumerique(ERR_NUMERIQUE);
 		throw ErrNumerique;
 	}
+	else if (atoi(pcResultat) <= 0)
+	{
+		CException ErrFormat(ERR_NUMERIQUE);
+		throw ErrFormat;
+	}
 	uiNbArcs = atoi(pcResultat);
 	
 	// Récupération des sommets
 	PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
-	if (!CParser::PARIsStringEqual(pcBalise, "Sommets"))
+	if (!CParser::PARIsStringEqual(pcBalise, "Sommets") || !CParser::PARIsStringEqual(pcResultat, "["))
 	{
 		CException ErrFormat(ERR_FORMAT);
 		throw ErrFormat;
@@ -97,12 +107,12 @@ CGraphe::CGraphe(const char * pcChemin)
 	}
 	
 	// On remplit le tableau
-	puiTabArcs = (unsigned int **)malloc(uiNbSommets * sizeof(unsigned int *));
+	puiTabArcs = (unsigned int **)malloc(uiNbArcs * sizeof(unsigned int *));
 	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 	{
 		puiTabArcs[uiBoucle] = (unsigned int *)malloc(2 * sizeof(unsigned int));
 	}
-	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 	{
 		// On récupère l'élement
 		PARParserGraphe.PARLireLigne(pcBalise, pcResultat);
@@ -138,7 +148,7 @@ CGraphe::CGraphe(const char * pcChemin)
 	{
 		GRPAjouterSommet(puiTabSommets[uiBoucle]);
 	}
-	for (uiBoucle = 0; uiBoucle < uiNbSommets; uiBoucle++)
+	for (uiBoucle = 0; uiBoucle < uiNbArcs; uiBoucle++)
 	{
 		GRPAjouterArc(puiTabArcs[uiBoucle][0], puiTabArcs[uiBoucle][1]);
 	}
@@ -152,6 +162,19 @@ CGraphe::CGraphe(const char * pcChemin)
 	free(puiTabSommets);
 }
 /********************************/
+
+CGraphe::CGraphe(CGraphe &GRPGraphe)
+{
+	unsigned int uiBoucle = 0;
+	
+	uiNombreSommet = GRPGraphe.GRPLireNombreSommet();
+	pSOMGRPTabSommet = (CSommet**)malloc(sizeof(CSommet*) * uiNombreSommet);
+	
+	for (uiBoucle = 0; uiBoucle < uiNombreSommet; uiBoucle++)
+	{
+		pSOMGRPTabSommet[uiBoucle] = new CSommet(*(GRPGraphe.GRPLireSommetIndice(uiBoucle)));
+	}
+}
 
 /********** DESTRUCTEUR *********/ 
 CGraphe::~CGraphe()
@@ -169,7 +192,7 @@ CGraphe::~CGraphe()
 /********** ACCESSEURS **********/ 
 
 /***********************************************************************************
-**** Nom: GRPLireSommet		                                                    ****
+**** Nom: GRPLireSommetNumero                                                   ****
 ************************************************************************************
 **** Permet de renvoyer un sommet en fonction de son numéro                     ****
 ************************************************************************************
@@ -178,16 +201,48 @@ CGraphe::~CGraphe()
 **** Entraîne: -								    							****
 **** Sortie: *CGraphe, le sommet associé à uiNumero								****
 ***********************************************************************************/
-CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
+CSommet * CGraphe::GRPLireSommetNumero(unsigned int uiNumero)
 {
-	if(!GRPContientSommet(uiNumero))
+	unsigned int uiNumeroReturn = GRPContientSommet(uiNumero);
+	
+	if(!uiNumeroReturn)
 	{
+		//Erreur, le sommet n'existe pas
 		CException ErrNumSom(ERR_NUMSOM);
 		throw ErrNumSom;
 	}
 	/*****************************/
 	
-	return pSOMGRPTabSommet[uiNumero];
+	return pSOMGRPTabSommet[uiNumeroReturn];
+}
+
+/***********************************************************************************
+**** Nom: GRPLireSommetIndice	                                                ****
+************************************************************************************
+**** Permet de renvoyer un sommet en fonction de son indice                     ****
+************************************************************************************
+**** Précondition: uiIndice est inférieur au nombre de sommet dans le tableau	****
+**** Entrée: uiIndice : unsigned int					                        ****
+**** Entraîne: -								    							****
+**** Sortie: *CGraphe, le sommet associé à l'indice uiIndice dans le tableau	****
+***********************************************************************************/
+CSommet * CGraphe::GRPLireSommetIndice(unsigned int uiIndice)
+{
+	if (uiIndice < uiNombreSommet)
+	{
+		return pSOMGRPTabSommet[uiIndice];
+	}
+	else
+	{
+		//Erreur, le sommet n'existe pas
+		CException ErrNumSom(ERR_NUMSOM);
+		throw ErrNumSom;
+	}
+}
+
+unsigned int CGraphe::GRPLireNombreSommet()
+{
+	return uiNombreSommet;
 }
 
 /***********************************************************************************
@@ -200,7 +255,7 @@ CSommet * CGraphe::GRPLireSommet(unsigned int uiNumero)
 **** Entraîne: -																****
 **** Sortie: bool																****
 ***********************************************************************************/
-bool CGraphe::GRPContientSommet(unsigned int uiNumero)
+int CGraphe::GRPContientSommet(unsigned int uiNumero)
 {
 	unsigned int uiBoucle = 0;
 	

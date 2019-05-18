@@ -12,6 +12,12 @@ CArc::CArc(unsigned int uiDestination)
 {
 	uiARCDestination = uiDestination;
 }
+
+/** Constructeur de recopie **/
+CArc::CArc(CArc &ARCArc)
+{
+	uiARCDestination = ARCArc.ARCLireDestination();
+}
 /********************************/
 
 /********** ACCESSEURS **********/ 
